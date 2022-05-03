@@ -1,4 +1,5 @@
 # cypress-element
+![Test status](https://github.com/dragorww/cypress-element/actions/workflows/main.yml/badge.svg)
 
 Composition api for [cypress](https://cypress.io)
 
