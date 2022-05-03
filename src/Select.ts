@@ -1,5 +1,6 @@
-import { Element } from "./Element";
 import SelectOptions = Cypress.SelectOptions;
+
+import { Element } from "./Element";
 
 export class Select<T> extends Element<T> {
   setValue(

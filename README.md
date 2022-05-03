@@ -1,4 +1,5 @@
 # cypress-element
+
 ![Test status](https://github.com/dragorww/cypress-element/actions/workflows/main.yml/badge.svg)
 
 Composition api for [cypress](https://cypress.io)
@@ -19,6 +20,79 @@ Today real app usually work on one of frameworks: React, Vue, Agular. All popula
 We can use same ideas in tests for real app, and take benefits of this.
 
 ## Usage
+
+You found examples of usage in [test folder](./cypress/integration/example)
+
+### Create page and use prebuild elements
+
+```typescript
+new Todo(
+  {},
+  {
+    items: new TodoItems(),
+    newTodoField: new Input({ selector: "[data-test=new-todo]" }),
+    clearCompletedButton: new Element({
+      selector: "button.todo-button.clear-completed",
+    }),
+  }
+);
+```
+
+### Create your own elements for business logic
+
+```typescript
+class Todo<T> extends Page<T> {
+  visit() {
+    super.visit("https://example.cypress.io/todo");
+    return this;
+  }
+
+  setFilter(filter: "All" | "Active" | "Completed") {
+    cy.get(".filters").contains(filter).click();
+  }
+}
+
+class TodoItems<T> extends Element<T> {
+  constructor() {
+    super({ selector: ".todo-list li" });
+  }
+
+  setCompleted(text: string) {
+    this.el.contains(text).parent().find("input[type=checkbox]").check();
+    return this;
+  }
+
+  getItem(text: string) {
+    return this.el.contains("li", text);
+  }
+
+  checkIsCompleted(text: string) {
+    this.getItem(text).should("have.class", "completed");
+    return this;
+  }
+
+  getIsCompleted(text: string) {
+    return this.getItem(text)
+      .invoke("prop", "class")
+      .then((i) => {
+        return i === "completed";
+      });
+  }
+}
+```
+
+## Write test
+
+```typescript
+it("can check off an item as completed", () => {
+  page._.items.setCompleted("Pay electric bill");
+  page._.items.checkIsCompleted("Pay electric bill");
+
+  page._.items.getIsCompleted("Pay electric bill").should("be.true");
+});
+```
+
+## Documentation
 
 ### Element
 
@@ -82,6 +156,8 @@ element class
   - [x] scrollIntoView
   - [x] should
   - [x] scrollTo
+  - [x] first
+  - [x] last
 - `Page`:
   - [x] visit
   - [x] hash
@@ -123,7 +199,6 @@ Other:
 - [ ] exec
 - [ ] filter
 - [ ] find
-- [ ] first
 - [ ] fixture
 - [ ] focused
 - [ ] go
@@ -131,7 +206,6 @@ Other:
 - [ ] intercept
 - [ ] invoke
 - [ ] its
-- [ ] last
 - [ ] log
 - [ ] next
 - [ ] nextAll

@@ -3,6 +3,7 @@ import Loggable = Cypress.Loggable;
 import Timeoutable = Cypress.Timeoutable;
 import ClearOptions = Cypress.ClearOptions;
 import BlurOptions = Cypress.BlurOptions;
+
 import { Element } from "./Element";
 
 export class Input extends Element<never> {
