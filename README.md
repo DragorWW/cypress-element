@@ -21,6 +21,7 @@ Base composable unit for selecting and interactive with elements on page
 
 ### elements
 
+- [x] Page
 - [x] Element
 - [x] Input
 - [x] Form
@@ -33,48 +34,54 @@ Base composable unit for selecting and interactive with elements on page
 
 ### Rewriting tests
 
-Actions:
-
-- [x] `.type()` - type into a DOM element
-- [x] `.focus()` - focus on a DOM element
-- [x] `.blur()` - blur off a DOM element
-- [x] `.clear()` - clears an input or textarea element
-- [x] `.submit()` - submit a for
-- [x] `.click()` - click on a DOM element
-- [x] `.dblclick()` - double click on a DOM element
-- [x] `.rightclick()` - right click on a DOM element
-- [ ] `.check()` - check a checkbox or radio elemen
-- [ ] `.uncheck()` - uncheck a checkbox elemen
-- [ ] `.select()` - select an option in a `<select>` elemen
-- [ ] `.scrollIntoView()` - scroll an element into vie
-- [ ] `.trigger()` - trigger an event on a DOM elemen
-- [ ] `cy.scrollTo()` - scroll the window or element to a position
+- [ ] `actions.spec.js`
+  - [ ] `.check()` - check a checkbox or radio elemen
+  - [ ] `.uncheck()` - uncheck a checkbox elemen
+  - [ ] `.select()` - select an option in a `<select>` elemen
+  - [ ] `.scrollIntoView()` - scroll an element into vie
+  - [ ] `.trigger()` - trigger an event on a DOM elemen
+- [ ] `connectors.spec.js`
+- [ ] `files.spec.js`
+- [ ] `navigation.spec.js`
+- [ ] `spies_stubs_clocks.spec.js`
+- [ ] `viewport.spec.js`
+- [ ] `aliasing.spec.js`
+- [ ] `cookies.spec.js`
+- [ ] `local_storage.spec.js`
+- [x] `location.spec.js`
+- [ ] `network_requests.spec.js`
+- [ ] `traversal.spec.js`
+- [ ] `waiting.spec.js`
+- [ ] `assertions.spec.js`
+- [ ] `cypress_api.spec.js`
+- [ ] `misc.spec.js`
+- [ ] `querying.spec.js`
+- [ ] `utilities.spec.js`
+- [x] `window.spec.js`
 
 ### Cypress supported commands list
 
-Page:
-
-- [x] visit
-- [x] hash
-- [x] location
-- [x] url
-
-Element:
-
-- [x] click
-- [x] dblclick
-- [x] get
-- [x] rightclick
-- [x] scrollIntoView
-- [x] should
-- [x] scrollTo
-
-Input:
-
-- [x] blur
-- [x] clear
-- [x] focus
-- [x] type
+- Page:
+  - [x] visit
+  - [x] hash
+  - [x] location
+  - [x] url
+  - [x] title
+  - [x] document
+  - [x] window
+- Element:
+  - [x] click
+  - [x] dblclick
+  - [x] get
+  - [x] rightclick
+  - [x] scrollIntoView
+  - [x] should
+  - [x] scrollTo
+- Input:
+  - [x] blur
+  - [x] clear
+  - [x] focus
+  - [x] type
 
 Other:
 
@@ -89,7 +96,6 @@ Other:
 - [ ] closest
 - [ ] contains
 - [ ] debug
-- [ ] document
 - [ ] each
 - [ ] end
 - [ ] eq
@@ -140,12 +146,10 @@ Other:
 - [ ] task
 - [ ] then
 - [ ] tick
-- [ ] title
 - [ ] trigger
 - [ ] uncheck
 - [ ] viewport
 - [ ] wait
-- [ ] window
 - [ ] within
 - [ ] wrap
 - [ ] writeFile

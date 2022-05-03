@@ -38,4 +38,16 @@ export class Page<T> extends Element<T> {
   getUrl(options?: Partial<UrlOptions>) {
     return this.el.url(options);
   }
+
+  getWindow(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.window(options);
+  }
+
+  getDocument(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.document(options);
+  }
+
+  getTitle(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.title(options);
+  }
 }
