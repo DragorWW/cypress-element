@@ -12,6 +12,11 @@ Composition api for [cypress](https://cypress.io)
 - **Reusable**: You can save elements hierarchy
 - **Friendly**: TypeScript first, autocomplete, auto type
 
+### Motivation
+
+Today real app usually work on one of frameworks: React, Vue, Agular. All popular frontend framework base on two concepts: composition structures and idea of everything is a component.
+We can use same ideas in tests for real app, and take benefits of this.
+
 ## Usage
 
 ### Element
@@ -33,6 +38,7 @@ element class
 - [x] Element
 - [x] Input
 - [x] Form
+- [x] Select
 - [ ] Checkbox
 - [ ] CheckboxGroup
 - [ ] Radio
@@ -45,8 +51,6 @@ element class
 - [ ] `actions.spec.js`
   - [ ] `.check()` - check a checkbox or radio elemen
   - [ ] `.uncheck()` - uncheck a checkbox elemen
-  - [ ] `.select()` - select an option in a `<select>` elemen
-  - [ ] `.scrollIntoView()` - scroll an element into vie
   - [ ] `.trigger()` - trigger an event on a DOM elemen
 - [ ] `connectors.spec.js`
 - [ ] `files.spec.js`
@@ -69,7 +73,15 @@ element class
 
 ### Cypress supported commands list
 
-- Page:
+- `Element`:
+  - [x] click
+  - [x] dblclick
+  - [x] get
+  - [x] rightclick
+  - [x] scrollIntoView
+  - [x] should
+  - [x] scrollTo
+- `Page`:
   - [x] visit
   - [x] hash
   - [x] location
@@ -78,19 +90,15 @@ element class
   - [x] document
   - [x] window
   - [x] reload
-- Element:
-  - [x] click
-  - [x] dblclick
-  - [x] get
-  - [x] rightclick
-  - [x] scrollIntoView
-  - [x] should
-  - [x] scrollTo
-- Input:
+- `Form`:
+  - [x] submit
+- `Input`:
   - [x] blur
   - [x] clear
   - [x] focus
   - [x] type
+- `Select`:
+  - [x] select
 
 Other:
 
@@ -140,7 +148,6 @@ Other:
 - [ ] root
 - [ ] route
 - [ ] screenshot
-- [ ] select
 - [ ] selectFile
 - [ ] server
 - [ ] session
@@ -150,7 +157,6 @@ Other:
 - [ ] spread
 - [ ] spy
 - [ ] stub
-- [ ] submit
 - [ ] task
 - [ ] then
 - [ ] tick
