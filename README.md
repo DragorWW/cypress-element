@@ -54,7 +54,10 @@ Actions:
 
 Page:
 
-- [ ] visit
+- [x] visit
+- [x] hash
+- [x] location
+- [x] url
 
 Element:
 
@@ -99,13 +102,11 @@ Other:
 - [ ] getCookie
 - [ ] getCookies
 - [ ] go
-- [ ] hash
 - [ ] hover
 - [ ] intercept
 - [ ] invoke
 - [ ] its
 - [ ] last
-- [ ] location
 - [ ] log
 - [ ] next
 - [ ] nextAll
@@ -142,7 +143,6 @@ Other:
 - [ ] title
 - [ ] trigger
 - [ ] uncheck
-- [ ] url
 - [ ] viewport
 - [ ] wait
 - [ ] window

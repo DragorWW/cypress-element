@@ -1,10 +1,15 @@
-import { Element } from "./Element";
 import VisitOptions = Cypress.VisitOptions;
+import Loggable = Cypress.Loggable;
+import Timeoutable = Cypress.Timeoutable;
+import UrlOptions = Cypress.UrlOptions;
+
+import { Element } from "./Element";
 
 export class Page<T> extends Element<T> {
   constructor(options: {}, children?: T) {
     super({ selector: "" }, children);
   }
+
   get el() {
     this.log({
       name: "el",
@@ -20,5 +25,17 @@ export class Page<T> extends Element<T> {
     this.el.visit(...args);
 
     return this;
+  }
+
+  getHash(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.hash(options);
+  }
+
+  getLocation(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.location(options);
+  }
+
+  getUrl(options?: Partial<UrlOptions>) {
+    return this.el.url(options);
   }
 }
