@@ -2,7 +2,7 @@
 
 Composition api for [cypress](https://cypress.io)
 
-`cypress-element` – Simple, Composable, Customisable, Reusable library for writing tests on Cypress
+`cypress-element` – Simple, Composable, Customisable, Reusable, Friendly for developer library written on TypeScript for writing tests on Cypress
 
 ## Main concept
 
@@ -10,12 +10,20 @@ Composition api for [cypress](https://cypress.io)
 - **Composable**: element can be organized by composition of elements hierarchy
 - **Customisable**: You can create own elements
 - **Reusable**: You can save elements hierarchy
+- **Friendly**: TypeScript first, autocomplete, auto type
 
 ## Usage
 
 ### Element
 
 Base composable unit for selecting and interactive with elements on page
+
+## Architecture
+
+element class
+
+- `get<X>` method should be return subject or original cy chain
+- other method should be return insance on original element for save own chain
 
 ## State of development
 
