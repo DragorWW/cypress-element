@@ -7,6 +7,7 @@ import ScrollToOptions = Cypress.ScrollToOptions;
 import { Chainer } from "./Chainer";
 
 export class Element<T extends Record<string, any> = Record<string, any>> {
+  name: string | undefined;
   protected _selector = "";
   protected _children: T;
   parent: Element<unknown>;
@@ -16,6 +17,7 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
 
     for (let [name, element] of Object.entries(this._children || {})) {
       element.parent = this;
+      element.name = name;
     }
   }
 
@@ -25,11 +27,14 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
       arr.push(this.parent.toString());
     }
 
-    arr.push(
-      !this._selector
-        ? this.constructor.name
-        : `${this.constructor.name}<${this._selector}>`
-    );
+    const name = this.name
+      ? Cypress._.camelCase(this.name)
+          .split("")
+          .map((val, key) => (key == 0 ? val.toUpperCase() : val))
+          .join("")
+      : this.constructor.name;
+
+    arr.push(!this._selector ? name : `${name}<${this._selector}>`);
 
     return arr.join(" > ");
   }

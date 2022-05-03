@@ -4,6 +4,7 @@ import Timeoutable = Cypress.Timeoutable;
 import UrlOptions = Cypress.UrlOptions;
 
 import { Element } from "./Element";
+import SetCookieOptions = Cypress.SetCookieOptions;
 
 export class Page<T> extends Element<T> {
   constructor(options: {}, children?: T) {
@@ -64,5 +65,31 @@ export class Page<T> extends Element<T> {
 
   getTitle(options?: Partial<Loggable & Timeoutable>) {
     return this.el.title(options);
+  }
+
+  clearCookies(options?: Partial<Loggable & Timeoutable>) {
+    this.el.clearCookies(options);
+
+    return this;
+  }
+
+  clearCookie(name: string, options?: Partial<Loggable & Timeoutable>) {
+    this.el.clearCookie(name, options);
+
+    return this;
+  }
+
+  getCookies(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.getCookies(options);
+  }
+
+  getCookie(name: string, options?: Partial<Loggable & Timeoutable>) {
+    return this.el.getCookie(name, options);
+  }
+
+  setCookie(name: string, value: string, options?: Partial<SetCookieOptions>) {
+    this.el.setCookie(name, value, options);
+
+    return this;
   }
 }

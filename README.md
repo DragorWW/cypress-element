@@ -58,7 +58,7 @@ element class
 - [ ] `spies_stubs_clocks.spec.js`
 - [ ] `viewport.spec.js`
 - [ ] `aliasing.spec.js`
-- [ ] `cookies.spec.js`
+- [x] `cookies.spec.js`
 - [ ] `local_storage.spec.js`
 - [x] `location.spec.js`
 - [ ] `network_requests.spec.js`
@@ -90,6 +90,11 @@ element class
   - [x] document
   - [x] window
   - [x] reload
+  - [x] clearCookies
+  - [x] clearCookie
+  - [x] getCookies
+  - [x] getCookie
+  - [x] setCookie
 - `Form`:
   - [x] submit
 - `Input`:
@@ -106,8 +111,6 @@ Other:
 - [ ] as
 - [ ] check
 - [ ] children
-- [ ] clearCookie
-- [ ] clearCookies
 - [ ] clearLocalStorage
 - [ ] clock
 - [ ] closest
@@ -122,8 +125,6 @@ Other:
 - [ ] first
 - [ ] fixture
 - [ ] focused
-- [ ] getCookie
-- [ ] getCookies
 - [ ] go
 - [ ] hover
 - [ ] intercept
@@ -151,7 +152,6 @@ Other:
 - [ ] selectFile
 - [ ] server
 - [ ] session
-- [ ] setCookie
 - [ ] shadow
 - [ ] siblings
 - [ ] spread
