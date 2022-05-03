@@ -1,6 +1,8 @@
 import ClickOptions = Cypress.ClickOptions;
 import PositionType = Cypress.PositionType;
 import Chainable = Cypress.Chainable;
+import ScrollIntoViewOptions = Cypress.ScrollIntoViewOptions;
+
 import { Chainer } from "./Chainer";
 
 export class Element<T extends Record<string, any> = Record<string, any>> {
@@ -92,6 +94,11 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   rightclick(x: number, y: number, options?: Partial<ClickOptions>): this;
   rightclick(...args) {
     this.el.rightclick(...args);
+    return this;
+  }
+  scrollIntoView(options?: Partial<ScrollIntoViewOptions>) {
+    this.el.scrollIntoView(options);
+
     return this;
   }
 }

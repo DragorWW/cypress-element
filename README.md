@@ -1,27 +1,29 @@
 # cypress-element
-Composition api for [cypress](https://cypress.io)
-===========
+
+# Composition api for [cypress](https://cypress.io)
 
 `cypress-element` – Simple, Composable, Customisable, Reusable library for writing tests on Cypress
 
 ## Main concept
+
 - **Simple**: Everything is an element
 - **Composable**: element can be organized by composition of elements hierarchy
 - **Customisable**: You can create own elements
 - **Reusable**: You can save elements hierarchy
 
-
 ## Usage
 
 ### Element
+
 Base composable unit for selecting and interactive with elements on page
 
 ## State of development
 
-###  elements
-- [X] Element
-- [X] Input
-- [X] Form
+### elements
+
+- [x] Element
+- [x] Input
+- [x] Form
 - [ ] Checkbox
 - [ ] CheckboxGroup
 - [ ] Radio
@@ -30,6 +32,7 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] Link
 
 ### Rewriting tests
+
 - Actions:
 - [x] `.type()` - type into a DOM element
 - [x] `.focus()` - focus on a DOM element
@@ -47,20 +50,35 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] `cy.scrollTo()` - scroll the window or element to a position
 
 ### Cypress supported commands list
+
+Element:
+
+- [x] click
+- [x] dblclick
+- [x] get
+- [x] rightclick
+- [x] scrollIntoView
+- [x] should
+
+Input:
+
+- [x] blur
+- [x] clear
+- [x] focus
+- [x] type
+
+Other:
+
 - [ ] and
 - [ ] as
-- [X] blur
 - [ ] check
 - [ ] children
-- [X] clear
 - [ ] clearCookie
 - [ ] clearCookies
 - [ ] clearLocalStorage
-- [X] click
 - [ ] clock
 - [ ] closest
 - [ ] contains
-- [X] dblclick
 - [ ] debug
 - [ ] document
 - [ ] each
@@ -71,9 +89,7 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] find
 - [ ] first
 - [ ] fixture
-- [X] focus
 - [ ] focused
-- [X] get
 - [ ] getCookie
 - [ ] getCookies
 - [ ] go
@@ -100,11 +116,9 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] readFile
 - [ ] reload
 - [ ] request
-- [X] rightclick
 - [ ] root
 - [ ] route
 - [ ] screenshot
-- [ ] scrollIntoView
 - [ ] scrollTo
 - [ ] select
 - [ ] selectFile
@@ -112,7 +126,6 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] session
 - [ ] setCookie
 - [ ] shadow
-- [ ] should
 - [ ] siblings
 - [ ] spread
 - [ ] spy
@@ -123,7 +136,6 @@ Base composable unit for selecting and interactive with elements on page
 - [ ] tick
 - [ ] title
 - [ ] trigger
-- [X] type
 - [ ] uncheck
 - [ ] url
 - [ ] viewport

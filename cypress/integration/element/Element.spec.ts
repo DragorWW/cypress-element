@@ -77,4 +77,23 @@ describe("Element", () => {
     actionDiv.rightclick().should("not.be.visible");
     input.should("be.visible");
   });
+
+  it(".scrollIntoView() - scroll an element into view", () => {
+    const horizontalButton = new Element({
+      selector: "#scroll-horizontal button",
+    });
+    const verticalButton = new Element({ selector: "#scroll-vertical button" });
+    const bothButton = new Element({ selector: "#scroll-both button" });
+    horizontalButton
+      .should("not.be.visible")
+      .scrollIntoView()
+      .should("be.visible");
+
+    verticalButton
+      .should("not.be.visible")
+      .scrollIntoView()
+      .should("be.visible");
+
+    bothButton.should("not.be.visible").scrollIntoView().should("be.visible");
+  });
 });
