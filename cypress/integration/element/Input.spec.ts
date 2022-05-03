@@ -1,8 +1,9 @@
-import { Input, Element } from "../../../src";
+import { Input, Element, Page } from "../../../src";
 
 context("Actions", () => {
   beforeEach(() => {
-    cy.visit("https://example.cypress.io/commands/actions");
+    const page = new Page({});
+    page.visit("https://example.cypress.io/commands/actions");
   });
 
   // https://on.cypress.io/interacting-with-elements

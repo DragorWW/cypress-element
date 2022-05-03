@@ -1,8 +1,9 @@
-import { Form, Input } from "../../../src";
+import { Form, Input, Page } from "../../../src";
 
 describe("Form", function () {
   beforeEach(() => {
-    cy.visit("https://example.cypress.io/commands/actions");
+    const page = new Page({});
+    page.visit("https://example.cypress.io/commands/actions");
   });
   it(".submit() - submit a form", () => {
     const myForm = new Form(

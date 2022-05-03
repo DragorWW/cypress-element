@@ -1,6 +1,6 @@
 # cypress-element
 
-# Composition api for [cypress](https://cypress.io)
+Composition api for [cypress](https://cypress.io)
 
 `cypress-element` – Simple, Composable, Customisable, Reusable library for writing tests on Cypress
 
@@ -54,6 +54,7 @@ Actions:
 
 Page:
 
+- [ ] visit
 
 Element:
 
@@ -143,7 +144,6 @@ Other:
 - [ ] uncheck
 - [ ] url
 - [ ] viewport
-- [ ] visit
 - [ ] wait
 - [ ] window
 - [ ] within

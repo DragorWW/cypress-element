@@ -1,9 +1,9 @@
-import { Element, Input } from "../../../src";
-import {Page} from "../../../src/Page";
+import { Element, Input, Page } from "../../../src";
 
 describe("Element", () => {
   beforeEach(() => {
-    cy.visit("https://example.cypress.io/commands/actions");
+    const page = new Page({});
+    page.visit("https://example.cypress.io/commands/actions");
   });
   it(".click() - click on a DOM element", () => {
     const button = new Element({ selector: ".action-btn" });
@@ -98,11 +98,15 @@ describe("Element", () => {
     bothButton.should("not.be.visible").scrollIntoView().should("be.visible");
   });
 
-  it('cy.scrollTo() - scroll the window or element to a position', () => {
+  it("cy.scrollTo() - scroll the window or element to a position", () => {
     const page = new Page({});
-    const scrollableHorizontal = new Element({selector: '#scrollable-horizontal'});
-    const scrollableVertical = new Element({selector: '#scrollable-vertical'});
-    const scrollableBoth = new Element({selector: '#scrollable-both'});
+    const scrollableHorizontal = new Element({
+      selector: "#scrollable-horizontal",
+    });
+    const scrollableVertical = new Element({
+      selector: "#scrollable-vertical",
+    });
+    const scrollableBoth = new Element({ selector: "#scrollable-both" });
 
     // You can scroll to 9 specific positions of an element:
     //  -----------------------------------
@@ -119,22 +123,22 @@ describe("Element", () => {
 
     // if you chain .scrollTo() off of cy, we will
     // scroll the entire window
-    page.scrollTo('bottom')
+    page.scrollTo("bottom");
 
-    scrollableHorizontal.scrollTo('right')
+    scrollableHorizontal.scrollTo("right");
 
     // or you can scroll to a specific coordinate:
     // (x axis, y axis) in pixels
-    scrollableVertical.scrollTo(250, 250)
+    scrollableVertical.scrollTo(250, 250);
 
     // or you can scroll to a specific percentage
     // of the (width, height) of the element
-    scrollableBoth.scrollTo('75%', '25%')
+    scrollableBoth.scrollTo("75%", "25%");
 
     // control the easing of the scroll (default is 'swing')
-    scrollableVertical.scrollTo('center', { easing: 'linear' })
+    scrollableVertical.scrollTo("center", { easing: "linear" });
 
     // control the duration of the scroll (in ms)
-    scrollableBoth.scrollTo('center', { duration: 2000 })
-  })
+    scrollableBoth.scrollTo("center", { duration: 2000 });
+  });
 });
