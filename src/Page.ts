@@ -27,12 +27,27 @@ export class Page<T> extends Element<T> {
     return this;
   }
 
+  reload(options?: Partial<Loggable & Timeoutable>): this;
+  reload(forceReload: boolean): this;
+  reload(...args) {
+    this.el.reload(...args);
+
+    return this;
+  }
+
   getHash(options?: Partial<Loggable & Timeoutable>) {
     return this.el.hash(options);
   }
 
-  getLocation(options?: Partial<Loggable & Timeoutable>) {
-    return this.el.location(options);
+  getLocation<K extends keyof Location>(
+    key: K,
+    options?: Partial<Loggable & Timeoutable>
+  ): Cypress.Chainable<Location[K]>;
+  getLocation(
+    options?: Partial<Loggable & Timeoutable>
+  ): Cypress.Chainable<Location>;
+  getLocation(...args) {
+    return this.el.location(...args);
   }
 
   getUrl(options?: Partial<UrlOptions>) {

@@ -20,7 +20,18 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   }
 
   toString(): string {
-    return `${this.constructor.name}<${this._selector}>`;
+    let arr = [];
+    if (this.parent) {
+      arr.push(this.parent.toString());
+    }
+
+    arr.push(
+      !this._selector
+        ? this.constructor.name
+        : `${this.constructor.name}<${this._selector}>`
+    );
+
+    return arr.join(" > ");
   }
 
   protected log(
@@ -62,7 +73,8 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
     });
     const el = cy.get(this._selector, { log: false });
 
-    if (this.parent) {
+    // TODO: change logics of find when parent is Page
+    if (this.parent && this.parent.constructor.name !== "Page") {
       return this.parent.el.find(this._selector);
     }
     return el;

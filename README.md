@@ -50,7 +50,7 @@ element class
   - [ ] `.trigger()` - trigger an event on a DOM elemen
 - [ ] `connectors.spec.js`
 - [ ] `files.spec.js`
-- [ ] `navigation.spec.js`
+- [x] `navigation.spec.js`
 - [ ] `spies_stubs_clocks.spec.js`
 - [ ] `viewport.spec.js`
 - [ ] `aliasing.spec.js`
@@ -77,6 +77,7 @@ element class
   - [x] title
   - [x] document
   - [x] window
+  - [x] reload
 - Element:
   - [x] click
   - [x] dblclick
@@ -135,7 +136,6 @@ Other:
 - [ ] prevAll
 - [ ] prevUntil
 - [ ] readFile
-- [ ] reload
 - [ ] request
 - [ ] root
 - [ ] route
