@@ -2,9 +2,9 @@ import VisitOptions = Cypress.VisitOptions;
 import Loggable = Cypress.Loggable;
 import Timeoutable = Cypress.Timeoutable;
 import UrlOptions = Cypress.UrlOptions;
+import SetCookieOptions = Cypress.SetCookieOptions;
 
 import { Element } from "./Element";
-import SetCookieOptions = Cypress.SetCookieOptions;
 
 export class Page<T> extends Element<T> {
   constructor(options: {}, children?: T) {

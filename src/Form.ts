@@ -1,5 +1,6 @@
 import Loggable = Cypress.Loggable;
 import Timeoutable = Cypress.Timeoutable;
+
 import { Element } from "./Element";
 
 export class Form<T> extends Element<T> {

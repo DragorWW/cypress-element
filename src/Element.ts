@@ -3,6 +3,8 @@ import PositionType = Cypress.PositionType;
 import Chainable = Cypress.Chainable;
 import ScrollIntoViewOptions = Cypress.ScrollIntoViewOptions;
 import ScrollToOptions = Cypress.ScrollToOptions;
+import Loggable = Cypress.Loggable;
+import Timeoutable = Cypress.Timeoutable;
 
 import { Chainer } from "./Chainer";
 
@@ -79,7 +81,7 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
     const el = cy.get(this._selector, { log: false });
 
     // TODO: change logics of find when parent is Page
-    if (this.parent && this.parent.constructor.name !== "Page") {
+    if (this.parent && this.parent._selector) {
       return this.parent.el.find(this._selector);
     }
     return el;
@@ -131,5 +133,14 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
     this.el.scrollTo(...args);
 
     return this;
+  }
+
+  // collection
+  getFirst(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.first(options);
+  }
+
+  getLast(options?: Partial<Loggable & Timeoutable>) {
+    return this.el.last(options);
   }
 }
