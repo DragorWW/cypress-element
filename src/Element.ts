@@ -2,6 +2,7 @@ import ClickOptions = Cypress.ClickOptions;
 import PositionType = Cypress.PositionType;
 import Chainable = Cypress.Chainable;
 import ScrollIntoViewOptions = Cypress.ScrollIntoViewOptions;
+import ScrollToOptions = Cypress.ScrollToOptions;
 
 import { Chainer } from "./Chainer";
 
@@ -98,6 +99,19 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   }
   scrollIntoView(options?: Partial<ScrollIntoViewOptions>) {
     this.el.scrollIntoView(options);
+
+    return this;
+  }
+
+  scrollTo(position: PositionType, options?: Partial<ScrollToOptions>): this;
+  scrollTo(
+    x: number | string,
+    y: number | string,
+    options?: Partial<ScrollToOptions>
+  ): this;
+  scrollTo(...args) {
+    // @ts-ignore
+    this.el.scrollTo(...args);
 
     return this;
   }

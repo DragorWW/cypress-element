@@ -33,7 +33,8 @@ Base composable unit for selecting and interactive with elements on page
 
 ### Rewriting tests
 
-- Actions:
+Actions:
+
 - [x] `.type()` - type into a DOM element
 - [x] `.focus()` - focus on a DOM element
 - [x] `.blur()` - blur off a DOM element
@@ -44,12 +45,15 @@ Base composable unit for selecting and interactive with elements on page
 - [x] `.rightclick()` - right click on a DOM element
 - [ ] `.check()` - check a checkbox or radio elemen
 - [ ] `.uncheck()` - uncheck a checkbox elemen
-- [ ] `.select()` - select an option in a <select> elemen
+- [ ] `.select()` - select an option in a `<select>` elemen
 - [ ] `.scrollIntoView()` - scroll an element into vie
 - [ ] `.trigger()` - trigger an event on a DOM elemen
 - [ ] `cy.scrollTo()` - scroll the window or element to a position
 
 ### Cypress supported commands list
+
+Page:
+
 
 Element:
 
@@ -59,6 +63,7 @@ Element:
 - [x] rightclick
 - [x] scrollIntoView
 - [x] should
+- [x] scrollTo
 
 Input:
 
@@ -119,7 +124,6 @@ Other:
 - [ ] root
 - [ ] route
 - [ ] screenshot
-- [ ] scrollTo
 - [ ] select
 - [ ] selectFile
 - [ ] server
