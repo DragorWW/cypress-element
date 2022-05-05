@@ -13,7 +13,7 @@ class Todo<T> extends Page<T> {
 
 class TodoItems<T> extends Element<T> {
   constructor() {
-    super({ selector: ".todo-list li" });
+    super({ selector: () => cy.get(".todo-list li") });
   }
 
   setCompleted(text: string) {

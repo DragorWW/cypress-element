@@ -98,6 +98,25 @@ it("can check off an item as completed", () => {
 
 Base composable unit for selecting and interactive with elements on page
 
+#### props: selector
+
+- type: string or function
+
+```typescript
+// find element by selector .className in parten if present
+new Element({ selector: ".className" });
+
+// use custom selector for global search
+new Element({
+  selector: () => cy.get(".className"),
+});
+
+// use parent for found element on page
+new Element({
+  selector: ({ parent }) => parent.el.find(".className"),
+});
+```
+
 ## Architecture
 
 element class

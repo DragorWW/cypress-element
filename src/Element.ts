@@ -8,12 +8,15 @@ import Timeoutable = Cypress.Timeoutable;
 
 import { Chainer } from "./Chainer";
 
+type SelectorFnType = (props: { parent?: Element }) => Chainable<JQuery>;
+type SelectorType = string | SelectorFnType;
+
 export class Element<T extends Record<string, any> = Record<string, any>> {
   name: string | undefined;
-  protected _selector = "";
+  protected _selector: SelectorType = "";
   protected _children: T;
   parent: Element<unknown>;
-  constructor({ selector }: { selector: string }, children?: T) {
+  constructor({ selector }: { selector: SelectorType }, children?: T) {
     this._selector = selector;
     this._children = children;
 
@@ -78,13 +81,22 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
       name: "el",
       message: this.toString(),
     });
-    const el = cy.get(this._selector, { log: false });
 
     // TODO: change logics of find when parent is Page
-    if (this.parent && this.parent._selector) {
+    const hasParent = Boolean(this.parent && this.parent._selector);
+
+    if (typeof this._selector === "function") {
+      if (hasParent) {
+        return this._selector({ parent: this.parent });
+      }
+      return this._selector({});
+    }
+
+    if (hasParent) {
       return this.parent.el.find(this._selector);
     }
-    return el;
+
+    return cy.get(this._selector, { log: false });
   }
 
   should: Chainer<this> = (...args) => {
