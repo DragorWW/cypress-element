@@ -1,6 +1,6 @@
 import { Page, Element } from "../../../src";
 
-context("Cookies", () => {
+context.skip("Cookies", () => {
   const page = new Page(
     {},
     {
