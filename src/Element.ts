@@ -112,6 +112,14 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   should: Chainer<this> = (...args) => {
     // @ts-ignore
     this.el.should(...args);
+
+    return this;
+  };
+
+  and: Chainer<this> = (...args) => {
+    // @ts-ignore
+    cy.and(...args);
+
     return this;
   };
 

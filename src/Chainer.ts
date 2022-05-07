@@ -1,4 +1,4 @@
-export interface Chainer<Subject> {
+export interface Chainer<Subject, El = JQuery> {
   // chai
   /**
    * Asserts that the target’s `type` is equal to the given string type.
@@ -2272,5 +2272,5 @@ export interface Chainer<Subject> {
    *      })
    * @see https://on.cypress.io/should
    */
-  (fn: (currentSubject: Subject) => void): Subject;
+  (fn: (currentSubject: El) => void): Subject;
 }

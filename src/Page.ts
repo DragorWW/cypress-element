@@ -7,7 +7,7 @@ import SetCookieOptions = Cypress.SetCookieOptions;
 import { Element } from "./Element";
 
 export class Page<T> extends Element<T> {
-  constructor({ name }: {name?: string}, children?: T) {
+  constructor({ name }: { name?: string }, children?: T) {
     super({ selector: "", name }, children);
   }
 
