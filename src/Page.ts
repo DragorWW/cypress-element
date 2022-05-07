@@ -7,14 +7,13 @@ import SetCookieOptions = Cypress.SetCookieOptions;
 import { Element } from "./Element";
 
 export class Page<T> extends Element<T> {
-  constructor(options: {}, children?: T) {
-    super({ selector: "" }, children);
+  constructor({ name }: {name?: string}, children?: T) {
+    super({ selector: "", name }, children);
   }
 
   get el() {
     this.log({
-      name: "el",
-      message: this.toString(),
+      name: "",
     });
     return cy;
   }

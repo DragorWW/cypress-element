@@ -1,14 +1,14 @@
 import { Element, Form, Input, Page, Select } from "../../../src";
 
 context("Actions", () => {
-  const pageActions = new Page({});
+  const pageActions = new Page({name: 'pageActions'});
   beforeEach(() => {
     pageActions.visit("https://example.cypress.io/commands/actions");
   });
 
-  it(".click() - click on a DOM element", () => {
-    const button = new Element({ selector: ".action-btn" });
-    const canvas = new Element({ selector: "#action-canvas" });
+  it.only(".click() - click on a DOM element", () => {
+    const button = new Element({ selector: ".action-btn", name: 'button' });
+    const canvas = new Element({ selector: "#action-canvas", name: 'canvas' });
 
     button.click();
 

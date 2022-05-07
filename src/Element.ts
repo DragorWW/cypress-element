@@ -16,9 +16,16 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   protected _selector: SelectorType = "";
   protected _children: T;
   parent: Element<unknown>;
-  constructor({ selector }: { selector: SelectorType }, children?: T) {
+  constructor(
+    { selector, name }: { selector: SelectorType; name?: string },
+    children?: T
+  ) {
     this._selector = selector;
     this._children = children;
+
+    if (name) {
+      this.name = name;
+    }
 
     for (let [name, element] of Object.entries(this._children || {})) {
       element.parent = this;
@@ -39,7 +46,9 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
           .join("")
       : this.constructor.name;
 
-    arr.push(!this._selector ? name : `${name}<${this._selector}>`);
+    arr.push(
+      !this._selector || this.name ? name : `${name}<${this._selector}>`
+    );
 
     return arr.join(" > ");
   }
@@ -47,18 +56,20 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   protected log(
     {
       name,
-      message,
+      message = "",
       consoleProps,
-    }: { name: string; message?: string; consoleProps?: {} },
+    }: { name?: string; message?: string; consoleProps?: {} },
     cb?: any
   ) {
     (cb || cy).element((sb) => {
       Cypress.log({
-        name: `${this.constructor.name}.${name}`,
+        name: name ? `${this.toString()}.${name}` : this.toString(),
         // shorter name for the Command Log
-        displayName: name,
-        $el: sb,
+        // displayName: name,
+        displayName: name ? `${this.toString()}.${name}` : this.toString(),
         message: message,
+        $el: sb,
+        // message: message,
         consoleProps: () => {
           return {
             ...consoleProps,
@@ -79,7 +90,6 @@ export class Element<T extends Record<string, any> = Record<string, any>> {
   get el(): Chainable<JQuery> {
     this.log({
       name: "el",
-      message: this.toString(),
     });
 
     // TODO: change logics of find when parent is Page
