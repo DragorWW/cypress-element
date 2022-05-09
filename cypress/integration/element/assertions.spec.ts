@@ -1,47 +1,34 @@
-import { Page, Element } from "../../../src";
+import { el } from "../../../src";
 
-class AssertionPage<T> extends Page<T> {
-  url = "https://example.cypress.io/commands/assertions";
+const assertionPage = el({
   visit() {
-    super.visit(this.url);
-
-    return this;
-  }
-}
+    cy.visit("https://example.cypress.io/commands/assertions");
+  },
+  table: el({
+    el: ".assertion-table",
+    firstRow: el("tbody tr:last"),
+    lastRow: el("tbody tr:last"),
+  }),
+  link: el(".assertions-link"),
+  pBlock: el(".assertions-p p"),
+  docsHeader: el(".docs-header div"),
+  twoElements: el({
+    el: ".two-elements",
+    first: el(".first"),
+    second: el(".second"),
+  }),
+  randomNumber: el("#random-number"),
+});
 
 context("Assertions", () => {
-  const assertionsPage = new AssertionPage(
-    {},
-    {
-      table: new Element(
-        { selector: ".assertion-table" },
-        {
-          firstRow: new Element({ selector: "tbody tr:last" }),
-          lastRow: new Element({ selector: "tbody tr:last" }),
-        }
-      ),
-      link: new Element({ selector: ".assertions-link" }),
-      pBlock: new Element({ selector: ".assertions-p p" }),
-      docsHeader: new Element({ selector: ".docs-header div" }),
-      twoElements: new Element(
-        { selector: ".two-elements" },
-        {
-          first: new Element({ selector: ".first" }),
-          second: new Element({ selector: ".second" }),
-        }
-      ),
-      randomNumber: new Element({ selector: "#random-number" }),
-    }
-  );
-
   beforeEach(() => {
-    assertionsPage.visit();
+    assertionPage.visit();
   });
 
   describe("Implicit Assertions", () => {
     it(".should() - make an assertion about the current subject", () => {
-      assertionsPage._.table._.firstRow.should("have.class", "success");
-      assertionsPage._.table._.firstRow.el
+      assertionPage.table.firstRow.should("have.class", "success");
+      assertionPage.table.firstRow
         .find("td")
         .first()
         // checking the text of the <td> element in various ways
@@ -59,7 +46,7 @@ context("Assertions", () => {
       // a better way to check element's text content against a regular expression
       // is to use "cy.contains"
       // https://on.cypress.io/contains
-      assertionsPage._.table._.lastRow.el
+      assertionPage.table.lastRow
         // finds first <td> element with text content matching regular expression
         .contains("td", /column content/i)
         .should("be.visible");
@@ -69,7 +56,7 @@ context("Assertions", () => {
     });
 
     it(".and() - chain multiple assertions together", () => {
-      assertionsPage._.link
+      assertionPage.link
         .should("have.class", "active")
         .and("have.attr", "href")
         .and("include", "cypress.io");
@@ -82,7 +69,7 @@ context("Assertions", () => {
       // of explicit assertions within it.
       // The ".should(cb)" function will be retried
       // automatically until it passes all your explicit assertions or times out.
-      assertionsPage._.pBlock.should(($p) => {
+      assertionPage.pBlock.should(($p) => {
         // https://on.cypress.io/$
         // return an array of texts from all of the p's
         const texts = $p.map((i, el) => Cypress.$(el).text());
@@ -105,7 +92,7 @@ context("Assertions", () => {
     });
 
     it("finds element by class name regex", () => {
-      assertionsPage._.docsHeader
+      assertionPage.docsHeader
         // .should(cb) callback function will be retried
         .should(($div) => {
           expect($div).to.have.length(1);
@@ -114,13 +101,13 @@ context("Assertions", () => {
 
           expect(className).to.match(/heading-/);
         })
-        .el.then(($div) => {
+        .then(($div) => {
           expect($div, "text content").to.have.text("Introduction");
         });
     });
 
     it("can throw any error", () => {
-      assertionsPage._.docsHeader.should(($div) => {
+      assertionPage.docsHeader.should(($div) => {
         if ($div.length !== 1) {
           // you can throw your own errors
           throw new Error("Did not find 1 element");
@@ -148,12 +135,12 @@ context("Assertions", () => {
        */
       const normalizeText = (s) => s.replace(/\s/g, "").toLowerCase();
 
-      assertionsPage._.twoElements._.first.el.then(($first) => {
+      assertionPage.twoElements.first.then(($first) => {
         // save text from the first element
         text = normalizeText($first.text());
       });
 
-      assertionsPage._.twoElements._.second.should(($div) => {
+      assertionPage.twoElements.second.should(($div) => {
         // we can massage text before comparing
         const secondText = normalizeText($div.text());
 
@@ -162,7 +149,7 @@ context("Assertions", () => {
     });
 
     it("retries the should callback until assertions pass", () => {
-      assertionsPage._.randomNumber.should(($div) => {
+      assertionPage.randomNumber.should(($div) => {
         const n = parseFloat($div.text());
 
         expect(n).to.be.gte(1).and.be.lte(10);

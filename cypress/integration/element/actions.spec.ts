@@ -1,16 +1,29 @@
-import { Element, Form, Input, Page, Select } from "../../../src";
+import { el } from "../../../src";
+
+const pageActions = el({
+  visit() {
+    cy.visit("https://example.cypress.io/commands/actions");
+  },
+  button: el(".action-btn"),
+  canvas: el("#action-canvas"),
+  actionDiv: el(".action-div"),
+  input: el(".action-input-hidden"),
+  rightclick: {
+    actionDiv: el(".rightclick-action-div"),
+    input: el(".rightclick-action-input-hidden"),
+  },
+  horizontalButton: el("#scroll-horizontal button"),
+  verticalButton: el("#scroll-vertical button"),
+  bothButton: el("#scroll-both button"),
+});
 
 context("Actions", () => {
-  const pageActions = new Page({ name: "pageActions" });
   beforeEach(() => {
-    pageActions.visit("https://example.cypress.io/commands/actions");
+    pageActions.visit();
   });
 
-  it.only(".click() - click on a DOM element", () => {
-    const button = new Element({ selector: ".action-btn", name: "button" });
-    const canvas = new Element({ selector: "#action-canvas", name: "canvas" });
-
-    button.click();
+  it(".click() - click on a DOM element", () => {
+    pageActions.button.click();
 
     // You can click on 9 specific positions of an element:
     //  -----------------------------------
@@ -26,21 +39,21 @@ context("Actions", () => {
     //  -----------------------------------
 
     // clicking in the center of the element is the default
-    canvas.click();
+    pageActions.canvas.click();
 
-    canvas.click("topLeft");
-    canvas.click("top");
-    canvas.click("topRight");
-    canvas.click("left");
-    canvas.click("right");
-    canvas.click("bottomLeft");
-    canvas.click("bottom");
-    canvas.click("bottomRight");
+    pageActions.canvas.click("topLeft");
+    pageActions.canvas.click("top");
+    pageActions.canvas.click("topRight");
+    pageActions.canvas.click("left");
+    pageActions.canvas.click("right");
+    pageActions.canvas.click("bottomLeft");
+    pageActions.canvas.click("bottom");
+    pageActions.canvas.click("bottomRight");
 
     // .click() accepts an x and y coordinate
     // that controls where the click occurs :)
 
-    canvas
+    pageActions.canvas
       .click(80, 75) // click 80px on x coord and 75px on y coord
       .click(170, 75)
       .click(80, 165)
@@ -59,55 +72,44 @@ context("Actions", () => {
   it(".dblclick() - double click on a DOM element", () => {
     // https://on.cypress.io/dblclick
 
-    const actionDiv = new Element({ selector: ".action-div" });
-    const input = new Input({ selector: ".action-input-hidden" });
-
     // Our app has a listener on 'dblclick' event in our 'scripts.js'
     // that hides the div and shows an input on double click
-    actionDiv.dblclick().should("not.be.visible");
-    input.should("be.visible");
+    pageActions.actionDiv.dblclick().should("not.be.visible");
+    pageActions.input.should("be.visible");
   });
 
   it(".rightclick() - right click on a DOM element", () => {
-    const actionDiv = new Element({ selector: ".rightclick-action-div" });
-    const input = new Input({ selector: ".rightclick-action-input-hidden" });
-
     // https://on.cypress.io/rightclick
 
     // Our app has a listener on 'contextmenu' event in our 'scripts.js'
     // that hides the div and shows an input on right click
-    actionDiv.rightclick().should("not.be.visible");
-    input.should("be.visible");
+    pageActions.rightclick.actionDiv.rightclick().should("not.be.visible");
+    pageActions.rightclick.input.should("be.visible");
   });
 
   it(".scrollIntoView() - scroll an element into view", () => {
-    const horizontalButton = new Element({
-      selector: "#scroll-horizontal button",
-    });
-    const verticalButton = new Element({ selector: "#scroll-vertical button" });
-    const bothButton = new Element({ selector: "#scroll-both button" });
-    horizontalButton
+    pageActions.horizontalButton
       .should("not.be.visible")
       .scrollIntoView()
       .should("be.visible");
 
-    verticalButton
+    pageActions.verticalButton
       .should("not.be.visible")
       .scrollIntoView()
       .should("be.visible");
 
-    bothButton.should("not.be.visible").scrollIntoView().should("be.visible");
+    pageActions.bothButton
+      .should("not.be.visible")
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("cy.scrollTo() - scroll the window or element to a position", () => {
-    const page = new Page({});
-    const scrollableHorizontal = new Element({
-      selector: "#scrollable-horizontal",
+    const page = el({
+      scrollableHorizontal: el("#scrollable-horizontal"),
+      scrollableVertical: el("#scrollable-vertical"),
+      scrollableBoth: el("#scrollable-both"),
     });
-    const scrollableVertical = new Element({
-      selector: "#scrollable-vertical",
-    });
-    const scrollableBoth = new Element({ selector: "#scrollable-both" });
 
     // You can scroll to 9 specific positions of an element:
     //  -----------------------------------
@@ -126,29 +128,31 @@ context("Actions", () => {
     // scroll the entire window
     page.scrollTo("bottom");
 
-    scrollableHorizontal.scrollTo("right");
+    page.scrollableHorizontal.scrollTo("right");
 
     // or you can scroll to a specific coordinate:
     // (x axis, y axis) in pixels
-    scrollableVertical.scrollTo(250, 250);
+    page.scrollableVertical.scrollTo(250, 250);
 
     // or you can scroll to a specific percentage
     // of the (width, height) of the element
-    scrollableBoth.scrollTo("75%", "25%");
+    page.scrollableBoth.scrollTo("75%", "25%");
 
     // control the easing of the scroll (default is 'swing')
-    scrollableVertical.scrollTo("center", { easing: "linear" });
+    page.scrollableVertical.scrollTo("center", { easing: "linear" });
 
     // control the duration of the scroll (in ms)
-    scrollableBoth.scrollTo("center", { duration: 2000 });
+    page.scrollableBoth.scrollTo("center", { duration: 2000 });
   });
 
   it(".type() - type into a DOM element", () => {
-    const inputEmail = new Input({ selector: ".action-email" });
-    const inputDisabled = new Input({ selector: ".action-disabled" });
+    const page = el({
+      inputEmail: el(".action-email"),
+      inputDisabled: el(".action-disabled"),
+    });
 
     // https://on.cypress.io/type
-    inputEmail
+    page.inputEmail
       .type("fake@email.com")
       .should("have.value", "fake@email.com")
 
@@ -166,7 +170,7 @@ context("Actions", () => {
       .type("slow.typing@email.com", { delay: 100 })
       .should("have.value", "slow.typing@email.com");
 
-    inputDisabled
+    page.inputDisabled
       // Ignore error checking prior to type
       // like whether the input is visible or disabled
       .type("disabled error checking", { force: true })
@@ -174,22 +178,27 @@ context("Actions", () => {
   });
 
   it(".focus() - focus on a DOM element", () => {
-    const inputPassword = new Input({ selector: ".action-focus" });
-    const label = new Element({ selector: 'label[for="password1"]' });
-    inputPassword.focus().should("have.class", "focus");
-    label.should("have.attr", "style", "color: orange;");
+    const page = el({
+      inputPassword: el(".action-focus"),
+      label: el('label[for="password1"]'),
+    });
+
+    page.inputPassword.focus().should("have.class", "focus");
+    page.label.should("have.attr", "style", "color: orange;");
   });
 
   it(".blur() - blur off a DOM element", () => {
-    const input = new Input({ selector: ".action-blur" });
-    const label = new Element({ selector: 'label[for="fullName1"]' });
+    const page = el({
+      input: el(".action-blur"),
+      label: el('label[for="fullName1"]'),
+    });
 
-    input.type("About to blur").blur().should("have.class", "error");
-    label.should("have.attr", "style", "color: red;");
+    page.input.type("About to blur").blur().should("have.class", "error");
+    page.label.should("have.attr", "style", "color: red;");
   });
 
   it(".clear() - clears an input or textarea element", () => {
-    const input = new Input({ selector: ".action-clear" });
+    const input = el(".action-clear");
     // https://on.cypress.io/clear
     input
       .type("Clear this text")
@@ -199,23 +208,18 @@ context("Actions", () => {
   });
 
   it(".submit() - submit a form", () => {
-    const myForm = new Form(
-      { selector: ".action-form" },
-      {
-        input: new Input({ selector: '[type="text"]' }),
-        input2: new Input({ selector: '[type="text"]' }),
-      }
-    );
+    const myForm = el({
+      el: ".action-form",
+      input: el('[type="text"]'),
+    });
 
-    myForm._.input.type("HALFOFF");
+    myForm.input.type("HALFOFF");
     myForm.submit();
 
-    cy.get(".action-form")
-      .next()
-      .should("contain", "Your form has been submitted!");
+    myForm.next().should("contain", "Your form has been submitted!");
   });
 
-  it.skip(".check() - check a checkbox or radio element", () => {
+  it(".check() - check a checkbox or radio element", () => {
     // https://on.cypress.io/check
 
     // By default, .check() will check all
@@ -250,7 +254,7 @@ context("Actions", () => {
       .should("be.checked");
   });
 
-  it.skip(".uncheck() - uncheck a checkbox element", () => {
+  it(".uncheck() - uncheck a checkbox element", () => {
     // https://on.cypress.io/uncheck
 
     // By default, .uncheck() will uncheck all matching
@@ -279,40 +283,42 @@ context("Actions", () => {
   });
 
   it(".select() - select an option in a <select> element", () => {
-    const select = new Select({ selector: ".action-select" });
-    const multiSelect = new Select({ selector: ".action-select-multiple" });
+    const page = el({
+      select: el(".action-select"),
+      multiSelect: el(".action-select-multiple"),
+    });
 
     // at first, no option should be selected
-    select.should("have.value", "--Select a fruit--");
+    page.select.should("have.value", "--Select a fruit--");
 
     // Select option(s) with matching text content
-    select.setValue("apples");
+    page.select.select("apples");
     // confirm the apples were selected
     // note that each value starts with "fr-" in our HTML
-    select.should("have.value", "fr-apples");
+    page.select.should("have.value", "fr-apples");
 
-    multiSelect
-      .setValue(["apples", "oranges", "bananas"])
+    page.multiSelect
+      .select(["apples", "oranges", "bananas"])
       // when getting multiple values, invoke "val" method first
-      .getValue()
+      .invoke("val")
       .should("deep.equal", ["fr-apples", "fr-oranges", "fr-bananas"]);
 
     // Select option(s) with matching value
-    select
-      .setValue("fr-bananas")
+    page.select
+      .select("fr-bananas")
       // can attach an assertion right away to the element
       .should("have.value", "fr-bananas");
 
-    multiSelect
-      .setValue(["fr-apples", "fr-oranges", "fr-bananas"])
-      .getValue()
+    page.multiSelect
+      .select(["fr-apples", "fr-oranges", "fr-bananas"])
+      .invoke("val")
       .should("deep.equal", ["fr-apples", "fr-oranges", "fr-bananas"]);
 
     // assert the selected values include oranges
-    multiSelect.getValue().should("include", "fr-oranges");
+    page.multiSelect.invoke("val").should("include", "fr-oranges");
   });
 
-  it.skip(".trigger() - trigger an event on a DOM element", () => {
+  it(".trigger() - trigger an event on a DOM element", () => {
     // https://on.cypress.io/trigger
 
     // To interact with a range input (slider)
