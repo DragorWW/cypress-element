@@ -1,20 +1,13 @@
-import { Page, Element } from "../../../src";
+import { el } from "../../../src";
 
-context.skip("Cookies", () => {
-  const page = new Page(
-    {},
-    {
-      getCookieButton: new Element({ selector: "#getCookie .set-a-cookie" }),
-      getCookiesButton: new Element({ selector: "#getCookies .set-a-cookie" }),
-      clearCookieButton: new Element({
-        selector: "#clearCookie .set-a-cookie",
-      }),
-      clearCookiesButton: new Element({
-        selector: "#clearCookies .set-a-cookie",
-      }),
-    }
-  );
+const page = el({
+  getCookieButton: el("#getCookie .set-a-cookie"),
+  getCookiesButton: el("#getCookies .set-a-cookie"),
+  clearCookieButton: el("#clearCookie .set-a-cookie"),
+  clearCookiesButton: el("#clearCookies .set-a-cookie"),
+});
 
+context("Cookies", () => {
   beforeEach(() => {
     Cypress.Cookies.debug(true);
 
@@ -27,7 +20,7 @@ context.skip("Cookies", () => {
 
   it("cy.getCookie() - get a browser cookie", () => {
     // https://on.cypress.io/getcookie
-    page._.getCookieButton.click();
+    page.getCookieButton.click();
 
     // cy.getCookie() yields a cookie object
     page.getCookie("token").should("have.property", "value", "123ABC");
@@ -37,7 +30,7 @@ context.skip("Cookies", () => {
     // https://on.cypress.io/getcookies
     page.getCookies().should("be.empty");
 
-    page._.getCookiesButton.click();
+    page.getCookiesButton.click();
 
     // cy.getCookies() yields an array of cookies
     page
@@ -68,7 +61,7 @@ context.skip("Cookies", () => {
     // https://on.cypress.io/clearcookie
     page.getCookie("token").should("be.null");
 
-    page._.clearCookieButton.click();
+    page.clearCookieButton.click();
 
     page.getCookie("token").should("have.property", "value", "123ABC");
 
@@ -80,7 +73,7 @@ context.skip("Cookies", () => {
     // https://on.cypress.io/clearcookies
     page.getCookies().should("be.empty");
 
-    page._.clearCookiesButton.click();
+    page.clearCookiesButton.click();
 
     page.getCookies().should("have.length", 1);
 

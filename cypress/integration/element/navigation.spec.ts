@@ -1,35 +1,33 @@
-import { Element, Page } from "../../../src";
+import { el } from "../../../src";
+
+const page = el({
+  navbar: el(".navbar-nav"),
+  dropdown: el(".dropdown-menu"),
+});
 
 context("Navigation", () => {
-  const page = new Page(
-    {},
-    {
-      navbar: new Element({ selector: ".navbar-nav" }),
-      dropdown: new Element({ selector: ".dropdown-menu" }),
-    }
-  );
   beforeEach(() => {
     page.visit("https://example.cypress.io");
-    page._.navbar.el.contains("Commands").click();
-    page._.dropdown.el.contains("Navigation").click();
+    page.navbar.contains("Commands").click();
+    page.dropdown.contains("Navigation").click();
   });
 
   it("cy.go() - go back or forward in the browser's history", () => {
-    page.getLocation("pathname").should("include", "navigation");
+    page.location("pathname").should("include", "navigation");
 
     cy.go("back");
-    page.getLocation("pathname").should("not.include", "navigation");
+    page.location("pathname").should("not.include", "navigation");
 
     cy.go("forward");
-    page.getLocation("pathname").should("include", "navigation");
+    page.location("pathname").should("include", "navigation");
 
     // clicking back
     cy.go(-1);
-    page.getLocation("pathname").should("not.include", "navigation");
+    page.location("pathname").should("not.include", "navigation");
 
     // clicking forward
     cy.go(1);
-    page.getLocation("pathname").should("include", "navigation");
+    page.location("pathname").should("include", "navigation");
   });
 
   it("cy.reload() - reload the page", () => {

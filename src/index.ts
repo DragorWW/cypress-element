@@ -1,5 +1,4 @@
-export { Element } from "./Element";
-export { Input } from "./Input";
-export { Form } from "./Form";
-export { Page } from "./Page";
-export { Select } from "./Select";
+import { el } from "./el";
+
+export { el };
+export default el;

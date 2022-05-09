@@ -1,19 +1,20 @@
-import { Page } from "../../../src";
+import { el } from "../../../src";
+
+const page = el({});
 
 context("Location", () => {
-  const page = new Page({});
   beforeEach(() => {
     page.visit("https://example.cypress.io/commands/location");
   });
 
   it("cy.hash() - get the current URL hash", () => {
     // https://on.cypress.io/hash
-    page.getHash().should("be.empty");
+    page.hash().should("be.empty");
   });
 
   it("cy.location() - get window.location", () => {
     // https://on.cypress.io/location
-    page.getLocation().should((location) => {
+    page.location().should((location) => {
       expect(location.hash).to.be.empty;
       expect(location.href).to.eq(
         "https://example.cypress.io/commands/location"
@@ -30,6 +31,6 @@ context("Location", () => {
 
   it("cy.url() - get the current URL", () => {
     // https://on.cypress.io/url
-    page.getUrl().should("eq", "https://example.cypress.io/commands/location");
+    page.url().should("eq", "https://example.cypress.io/commands/location");
   });
 });
