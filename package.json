@@ -1,19 +1,34 @@
 {
   "name": "cypress-element",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.2",
+  "keywords": [
+    "cypress"
+  ],
+  "author": "DragorWW <dragorww@gmail.com>",
+  "license": "ISC",
+  "description": "Composition api for cypress",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "start": "cypress open",
     "test": "cypress run",
+    "build": "tsc",
     "prettier": "prettier --write ./"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "cypress": "^9.6.0",
+    "cypress": "^9.6.1",
     "prettier": "2.6.2",
     "typescript": "^4.6.4"
+  },
+  "bugs": {
+    "url": "https://github.com/DragorWW/cypress-element/issues"
+  },
+  "homepage": "https://github.com/DragorWW/cypress-element#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DragorWW/cypress-element.git"
   }
 }

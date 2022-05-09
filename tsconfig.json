@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "moduleResolution": "Node",
-    "target": "es2015",
-    "lib": ["esnext", "dom"],
-    "types": ["cypress"]
+    "target": "es2020",
+    "outDir": "lib",
+    "types": ["cypress"],
+    "declaration": true
   },
-  "include": ["**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

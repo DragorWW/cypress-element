@@ -1,1 +1,1 @@
-import "../../src/commands/element";
+import "../../src/commands";
