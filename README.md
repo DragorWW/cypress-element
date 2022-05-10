@@ -9,7 +9,7 @@ Composition api for [cypress](https://cypress.io)
 
 `cypress-element` – Simple, Composable, Customisable, Reusable, Friendly for developer library written on TypeScript for writing tests on Cypress
 
-![Screenshot](./docs/cypress-element-runtime.png)
+![Screenshot](https://raw.githubusercontent.com/dragorww/cypress-element/main/docs/cypress-element-runtime.png)
 
 ### Main concept
 
