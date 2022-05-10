@@ -2,6 +2,19 @@ import { componentSymbol, parentSymbol } from "./constants";
 import { isEl, isRootSelector, isSelector, log } from "./helpers";
 import { rootSelector } from "./rootSelector";
 
+type SelectorType = string | String;
+
+type a = Record<string, () => {}>;
+
+// TODO add Record<string, ElementType<any> | ((...args: any[]) => void)>
+type ElementProps = {
+  el?: SelectorType;
+  name?: string;
+};
+
+type ElementType<T extends ElementProps, C = any> = Omit<T, "el" | "name"> &
+  Omit<Cypress.Chainable<C>, keyof T>;
+
 const getEl = (target, method) => {
   let selectorsList = [target.el];
 
@@ -40,15 +53,13 @@ el.r = rootSelector;
 
 export function el<T extends keyof HTMLElementTagNameMap>(
   tag: T
-): Cypress.Chainable<JQuery<HTMLElementTagNameMap[T]>>;
+): ElementType<{}, JQuery<HTMLElementTagNameMap[T]>>;
 export function el<T extends Node = HTMLElement>(
   selector: string
-): Cypress.Chainable<JQuery<T>>;
-export function el<T extends string>(
-  selector1: T
-): Cypress.Chainable<JQuery<T>>;
-export function el<T extends {}>(props: T): T & Cypress.Chainable;
-export function el<T>(props: T): T & Cypress.Chainable {
+): ElementType<{}, JQuery<T>>;
+export function el<T extends string>(selector1: T): ElementType<{}, JQuery<T>>;
+export function el<T extends ElementProps>(props1: T): ElementType<T, JQuery>;
+export function el(props) {
   const component: any = {
     ...(isSelector(props)
       ? {
