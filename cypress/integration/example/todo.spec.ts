@@ -1,5 +1,26 @@
 import { el } from "../../../src";
 
+const todoItem = el({
+  name: "todo",
+  el: ".todo-list li",
+  setCompleted(text: string) {
+    this.contains(text).parent().find("input[type=checkbox]").check();
+  },
+  getItem(text: string) {
+    return this.contains("li", text);
+  },
+  checkIsCompleted(text: string) {
+    this.getItem(text).should("have.class", "completed");
+  },
+  getIsCompleted(text: string) {
+    return this.getItem(text)
+      .invoke("prop", "class")
+      .then((i) => {
+        return i === "completed";
+      });
+  },
+});
+
 const todoPage = el({
   name: "todoPage",
   visit() {
@@ -10,26 +31,7 @@ const todoPage = el({
   },
   newTodoField: el("[data-test=new-todo]"),
   clearCompletedButton: el("button.todo-button.clear-completed"),
-  items: el({
-    name: "todo",
-    el: ".todo-list li",
-    setCompleted(text: string) {
-      this.contains(text).parent().find("input[type=checkbox]").check();
-    },
-    getItem(text: string) {
-      return this.contains("li", text);
-    },
-    checkIsCompleted(text: string) {
-      this.getItem(text).should("have.class", "completed");
-    },
-    getIsCompleted(text: string) {
-      return this.getItem(text)
-        .invoke("prop", "class")
-        .then((i) => {
-          return i === "completed";
-        });
-    },
-  }),
+  items: todoItem,
 });
 
 describe("example to-do app", () => {
