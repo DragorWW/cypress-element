@@ -1,7 +1,6 @@
-# 🎁 cypress-element <small>0.0.2</small>
+# 🎁 cypress-element <small>0.0.3</small>
 
 > Composition api for [cypress](https://cypress.io)
-
 
 - ✨**Simple**: Everything is an element
 - 🌳**Composable**: element can be organized by composition of elements hierarchy

@@ -56,7 +56,7 @@ it("test", () => {
 });
 ```
 
-## Documentation
+## Additional information
 
 Read more in [documentation](https://dragorww.github.io/cypress-element/#/docs);
 

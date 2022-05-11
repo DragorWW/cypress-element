@@ -61,7 +61,6 @@ In the future, you will save your time if you adhere to the following convention
 `cypress-element` don't have limitation of rules for your app. You can describe composition of elements as you want.
 
 ```typescript
-
 const myButton = el({
   el: "button",
 });
@@ -74,7 +73,6 @@ const root = el({
   }),
 });
 ```
-
 
 ## define method
 
@@ -95,11 +93,12 @@ const todoPage = el({
 });
 
 // usage
-todoPage.visit()
+todoPage.visit();
 todoPage.setFilter("All");
 ```
 
 ### this
+
 ```typescript
 const myButton = el({
   el: "button",
@@ -113,7 +112,6 @@ const myButton = el({
   },
 });
 ```
-
 
 ## API
 

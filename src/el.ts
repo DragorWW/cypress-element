@@ -44,6 +44,10 @@ const getEl = (target, method) => {
     return cy[method];
   }
 
+  const selector = selectorsList.join(" ");
+
+  log({ type: "cy", target, $el: Cypress.$(selector) });
+
   const el = cy.get(selectorsList.join(" "));
 
   return el[method].bind(el);
@@ -91,19 +95,15 @@ export function el(props) {
 
       if (name in target) {
         if (!isEl(target[name])) {
-          log("method", target, name);
+          log({ type: "method", target, name });
         }
 
         return target[name];
       }
 
       if (name in cy) {
-        log("cy", target);
-
         return getEl(target, name);
       }
-
-      console.log(" - unknown on target", target, name);
 
       return undefined;
     },
