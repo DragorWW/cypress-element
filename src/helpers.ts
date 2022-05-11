@@ -4,16 +4,18 @@ type LogType = "method" | "cy";
 type SelectorType = string | String;
 type ElementType = Record<string | symbol, any>; // FIXME: describe type for Proxy of element
 
-export const isEl = (target: ElementType): boolean =>
-  target[componentSymbol] || false;
-
-export const isSelector = (selector: any): boolean => {
-  return typeof selector === "string" || isRootSelector(selector);
+export const isEl = (target: unknown): target is ElementType => {
+  if (typeof target === "object") {
+    return !!target[componentSymbol];
+  }
+  return false;
 };
 
-export const isRootSelector = (selector: SelectorType): boolean => {
-  return selector instanceof String && selector[rootSymbol];
-};
+export const isSelector = (selector: any): boolean =>
+  typeof selector === "string" || isRootSelector(selector);
+
+export const isRootSelector = (selector: SelectorType): boolean =>
+  !!(selector instanceof String && selector[rootSymbol]);
 
 export const getElType = (target: ElementType): string | undefined => {
   if (!target.name) {
@@ -30,6 +32,9 @@ export const getElPath = (target: ElementType, name?): string => {
   const elType = getElType(target);
 
   if (!(parentSymbol in target)) {
+    if (!name && elType) {
+      return `<${elType}>`;
+    }
     if (!name) {
       return "";
     }

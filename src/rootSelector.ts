@@ -1,7 +1,8 @@
 import { rootSymbol } from "./constants";
 
 export const rootSelector = (strings, ...keys): string => {
-  const str = new String(strings.raw[0]);
+  console.log(strings, keys);
+  const str = new String(String.raw(strings, ...keys));
   str[rootSymbol] = true;
   return str as string;
 };
