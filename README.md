@@ -29,14 +29,6 @@ yarn add -D cypress-element
 
 ## Usage
 
-`cypress-element` extends Cypress' `cy` command.
-
-Add this line to your project's `cypress/support/commands.js`:
-
-```javascript
-import "cypress-element/lib/commands";
-```
-
 Then, in your test, you can write
 
 ```typescript

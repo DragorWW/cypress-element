@@ -1,6 +1,6 @@
 {
   "name": "cypress-element",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "keywords": [
     "cypress"
   ],
@@ -16,7 +16,8 @@
     "start": "cypress open",
     "test": "cypress run",
     "build": "tsc",
-    "prettier": "prettier --write ./"
+    "prettier": "prettier --write ./",
+    "docs:start": "npx docsify-cli serve ./docs"
   },
   "devDependencies": {
     "cypress": "^9.6.1",

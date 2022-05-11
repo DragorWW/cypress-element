@@ -59,7 +59,10 @@ type LogParams = {
 export const log = ({ type, target, name, $el }: LogParams): void => {
   const path = `🎁${getElPath(target, name)}${getLogPostfix(type)}`;
 
-  cy.element(() => {
+  // need call cy then for display log correctly
+  // - in cypress call stack
+  // - not before cypress call stack
+  cy.wrap({}, { log: false }).then(() => {
     let el: HTMLElement | HTMLElement[] = $el?.get() || [];
     if (el.length === 1) {
       el = el[0];
@@ -69,6 +72,7 @@ export const log = ({ type, target, name, $el }: LogParams): void => {
 
     Cypress.log({
       name: "cypress-element",
+      type: "parent",
       displayName: path,
       $el,
       message: "", // prevent display right side in cypress runner
