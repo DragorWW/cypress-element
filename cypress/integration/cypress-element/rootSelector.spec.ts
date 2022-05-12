@@ -1,5 +1,5 @@
 import { rootSelector } from "../../../src/rootSelector";
-import { rootSymbol } from "../../../src/constants";
+import { ROOT_SYMBOL } from "../../../src/constants";
 
 describe("rootSelector", () => {
   it("should be String class", () => {
@@ -7,7 +7,7 @@ describe("rootSelector", () => {
   });
 
   it("should be have root selector symbol", () => {
-    expect(rootSelector``).to.haveOwnProperty(rootSymbol as any, true);
+    expect(rootSelector``).to.haveOwnProperty(ROOT_SYMBOL as any, true);
   });
 
   it("original selector should be save", () => {

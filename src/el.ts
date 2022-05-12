@@ -1,57 +1,10 @@
-import { componentSymbol, parentSymbol } from "./constants";
-import { isEl, isRootSelector, isSelector, log } from "./helpers";
+import { COMPONENT_SYMBOL, CONFIG_SYMBOL, PARENT_SYMBOL } from "./constants";
+import { ElementProps, ElementType, ElementTypeLocal } from "./type";
+
+import { isEl, isSelector } from "./helpers";
+import { getCypressMethod, log } from "./utils";
+
 import { rootSelector } from "./rootSelector";
-
-type SelectorType = string | String;
-
-type a = Record<string, () => {}>;
-
-// TODO add Record<string, ElementType<any> | ((...args: any[]) => void)>
-type ElementProps = {
-  el?: SelectorType;
-  name?: string;
-};
-
-type ElementType<T extends ElementProps, C = any> = Omit<T, "el" | "name"> &
-  Omit<Cypress.Chainable<C>, keyof T>;
-
-const getEl = (target, method) => {
-  let selectorsList = [target.el];
-
-  if (parentSymbol in target) {
-    let parent = target[parentSymbol].parent;
-    while (parent) {
-      selectorsList.push(parent.el);
-      parent = parent[parentSymbol];
-    }
-  }
-
-  selectorsList = selectorsList
-    .filter(Boolean)
-    .map((i) => {
-      if (typeof i === "function") return i();
-      return i;
-    })
-    .reduce<(string | String)[]>((acc, current: string | String) => {
-      if (!acc.find(isRootSelector)) {
-        acc.push(current);
-      }
-      return acc;
-    }, [])
-    .reverse();
-
-  if (selectorsList.length === 0) {
-    return cy[method];
-  }
-
-  const selector = selectorsList.join(" ");
-
-  log({ type: "cy", target, $el: Cypress.$(selector) });
-
-  const el = cy.get(selectorsList.join(" "));
-
-  return el[method].bind(el);
-};
 
 el.r = rootSelector;
 
@@ -61,36 +14,30 @@ export function el<T extends keyof HTMLElementTagNameMap>(
 export function el<T extends Node = HTMLElement>(
   selector: string
 ): ElementType<{}, JQuery<T>>;
-export function el<T extends string>(selector1: T): ElementType<{}, JQuery<T>>;
-export function el<T extends ElementProps>(props1: T): ElementType<T, JQuery>;
+export function el<T extends string>(selector: T): ElementType<{}, JQuery<T>>;
+export function el<T extends ElementProps>(props: T): ElementType<T, JQuery>;
 export function el(props) {
   const component: any = {
-    ...(isSelector(props)
-      ? {
-          el: props,
-        }
-      : props),
+    ...(isSelector(props) ? { el: props } : props),
+    [COMPONENT_SYMBOL]: true,
   };
+
+  component[CONFIG_SYMBOL] = { ...component };
 
   const proxy = new Proxy(component, {
     set: function (oTarget, sKey, vValue) {
-      if (sKey !== parentSymbol) {
+      if (sKey !== PARENT_SYMBOL) {
         return false;
       }
-      return (oTarget[parentSymbol] = vValue);
+      return (oTarget[PARENT_SYMBOL] = vValue);
     },
-    get: function (target, name) {
-      if (name === "el") {
-        return target.el;
-      }
-      if (name === "name") {
-        return target.name;
-      }
-      if (name === componentSymbol) {
-        return true;
-      }
-      if (name === parentSymbol) {
-        return target[parentSymbol];
+    get: function (target: ElementTypeLocal, name) {
+      if (
+        ["el", "name", PARENT_SYMBOL, COMPONENT_SYMBOL, CONFIG_SYMBOL].includes(
+          name
+        )
+      ) {
+        return target[name];
       }
 
       if (name in target) {
@@ -102,21 +49,20 @@ export function el(props) {
       }
 
       if (name in cy) {
-        return getEl(target, name);
+        return getCypressMethod(target, name);
       }
 
       return undefined;
     },
   }) as any;
 
-  if (typeof props === "object") {
-    for (let [name, element] of Object.entries(props)) {
-      if (typeof element === "object" && element[componentSymbol]) {
-        element[parentSymbol] = {
-          parent: proxy,
-          name,
-        };
-      }
+  for (let [name, element] of Object.entries(component)) {
+    if (isEl(element)) {
+      component[name] = el(element[CONFIG_SYMBOL]);
+      component[name][PARENT_SYMBOL] = {
+        parent: proxy,
+        name,
+      };
     }
   }
 

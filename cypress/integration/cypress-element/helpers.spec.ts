@@ -6,6 +6,7 @@ import {
   isSelector,
   getElType,
   getElPath,
+  getSelectorByElement,
 } from "../../../src/helpers";
 
 const elWithChildren = el({
@@ -91,5 +92,61 @@ describe("getElPath", () => {
     expect(getElPath(elWithChildren.child2, "method")).to.be.eq(
       "<ElWithChildren>.child2<Child2>.method"
     );
+  });
+});
+
+describe("getSelectorByElement", () => {
+  const exampleTree = el({
+    withSelector: el({
+      el: "withSelector",
+      withSelector: el({ el: "withSelector" }),
+      withOutSelector: el({}),
+      withRoot: el(el.r`withRoot`),
+    }),
+    withOutSelector: el({
+      withSelector: el({ el: "withSelector" }),
+      withOutSelector: el({}),
+    }),
+  });
+  describe("single element", () => {
+    it("element without selector", () => {
+      expect(getSelectorByElement(el({}))).to.be.undefined;
+    });
+    it("element with selector", () => {
+      expect(getSelectorByElement(el("selector"))).to.be.eq("selector");
+    });
+  });
+  it("root selector prevent any parent selectors", () => {
+    expect(getSelectorByElement(exampleTree.withSelector.withRoot)).to.be.eq(
+      "withRoot"
+    );
+  });
+
+  it("when parent and child has selectors - selectors should split `space`", () => {
+    expect(
+      getSelectorByElement(exampleTree.withSelector.withSelector)
+    ).to.be.eq("withSelector withSelector");
+  });
+
+  it("element tree", () => {
+    expect(
+      getSelectorByElement(exampleTree.withSelector.withOutSelector)
+    ).to.be.eq("withSelector");
+    expect(
+      getSelectorByElement(exampleTree.withOutSelector.withSelector)
+    ).to.be.eq("withSelector");
+    expect(getSelectorByElement(exampleTree.withOutSelector.withOutSelector)).to
+      .be.undefined;
+  });
+
+  it("el don't mutable", () => {
+    const single = el("single");
+
+    const parent1 = el({ el: "parent1", single });
+    const parent2 = el({ el: "parent2", single });
+
+    expect(getSelectorByElement(single)).to.be.eq("single");
+    expect(getSelectorByElement(parent1.single)).to.be.eq("parent1 single");
+    expect(getSelectorByElement(parent2.single)).to.be.eq("parent2 single");
   });
 });

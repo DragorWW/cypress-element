@@ -1,12 +1,9 @@
-import { componentSymbol, parentSymbol, rootSymbol } from "./constants";
+import { COMPONENT_SYMBOL, PARENT_SYMBOL, ROOT_SYMBOL } from "./constants";
+import { ElementType, ElementTypeLocal, LogType, SelectorType } from "./type";
 
-type LogType = "method" | "cy";
-type SelectorType = string | String;
-type ElementType = Record<string | symbol, any>; // FIXME: describe type for Proxy of element
-
-export const isEl = (target: unknown): target is ElementType => {
+export const isEl = (target: unknown): target is ElementTypeLocal => {
   if (typeof target === "object") {
-    return !!target[componentSymbol];
+    return !!target[COMPONENT_SYMBOL];
   }
   return false;
 };
@@ -15,9 +12,11 @@ export const isSelector = (selector: any): boolean =>
   typeof selector === "string" || isRootSelector(selector);
 
 export const isRootSelector = (selector: SelectorType): boolean =>
-  !!(selector instanceof String && selector[rootSymbol]);
+  !!(selector instanceof String && selector[ROOT_SYMBOL]);
 
-export const getElType = (target: ElementType): string | undefined => {
+export const getElType = (
+  target: ElementTypeLocal | ElementType<any>
+): string | undefined => {
   if (!target.name) {
     return undefined;
   }
@@ -28,10 +27,13 @@ export const getElType = (target: ElementType): string | undefined => {
     .join("");
 };
 
-export const getElPath = (target: ElementType, name?): string => {
+export const getElPath = (
+  target: ElementTypeLocal | ElementType<any>,
+  name?
+): string => {
   const elType = getElType(target);
 
-  if (!(parentSymbol in target)) {
+  if (!(PARENT_SYMBOL in target)) {
     if (!name && elType) {
       return `<${elType}>`;
     }
@@ -41,7 +43,7 @@ export const getElPath = (target: ElementType, name?): string => {
     return elType ? `<${elType}>.${name}` : `.${name}`;
   }
 
-  const { parent, name: nameInParent } = target[parentSymbol];
+  const { parent, name: nameInParent } = target[PARENT_SYMBOL];
 
   const path = getElPath(parent, nameInParent);
 
@@ -55,39 +57,32 @@ export const getLogPostfix = (type: LogType): string => {
   }[type];
 };
 
-type LogParams = {
-  type: LogType;
-  target: ElementType;
-  name?: keyof ElementType;
-  $el?: JQuery;
-};
-export const log = ({ type, target, name, $el }: LogParams): void => {
-  const path = `🎁${getElPath(target, name)}${getLogPostfix(type)}`;
+export const getSelectorByElement = (
+  target: ElementTypeLocal | ElementType<any>
+): string | undefined => {
+  let selectorsList: SelectorType[] = [target.el];
 
-  // need call cy then for display log correctly
-  // - in cypress call stack
-  // - not before cypress call stack
-  cy.wrap({}, { log: false }).then(() => {
-    let el: HTMLElement | HTMLElement[] = $el?.get() || [];
-    if (el.length === 1) {
-      el = el[0];
-    } else if (el.length === 0) {
-      el = undefined;
+  if (PARENT_SYMBOL in target) {
+    let parent = target[PARENT_SYMBOL].parent;
+    while (parent) {
+      selectorsList.push(parent.el);
+      parent = parent[PARENT_SYMBOL];
     }
+  }
 
-    Cypress.log({
-      name: "cypress-element",
-      type: "parent",
-      displayName: path,
-      $el,
-      message: "", // prevent display right side in cypress runner
-      consoleProps() {
-        return {
-          path,
-          element: target,
-          yielded: el,
-        };
-      },
-    });
-  });
+  selectorsList = selectorsList
+    .filter(Boolean)
+    .reduce<(string | String)[]>((acc, current: string | String) => {
+      if (!acc.find(isRootSelector)) {
+        acc.push(current);
+      }
+      return acc;
+    }, [])
+    .reverse();
+
+  if (selectorsList.length === 0) {
+    return;
+  }
+
+  return selectorsList.join(" ");
 };

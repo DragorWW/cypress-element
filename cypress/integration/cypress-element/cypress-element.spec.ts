@@ -1,6 +1,6 @@
 import { el } from "../../../src";
 
-describe("el", () => {
+describe("cypress-element", () => {
   beforeEach(() => {
     // cy.visit("./cypress/test.html");
     // FIXME: bug in cypress, when run spec from 2 files with diference origin

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.6
+
+- fix: `el({child})` mutate original `child` and brok `child.click()` and other method
+
 ## 0.0.5
 
 - fix: log display `name` of single element
