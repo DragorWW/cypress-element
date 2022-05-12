@@ -1,6 +1,11 @@
 # CHANGELOG
 
+# 0.2.0
+
+- add: types for this in methods, now normally work autocomplete
+
 ## 0.1.0
+
 - fix: `el()` incorrect calculate selector of children in deep nesting
 - add: provide `Element.el` in public api
 

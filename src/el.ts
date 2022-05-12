@@ -1,5 +1,10 @@
 import { COMPONENT_SYMBOL, CONFIG_SYMBOL, PARENT_SYMBOL } from "./constants";
-import { ElementProps, ElementType, ElementTypeLocal } from "./type";
+import {
+  ElementProps,
+  ElementPropsContext,
+  ElementType,
+  ElementTypeLocal,
+} from "./type";
 
 import { isEl, isSelector } from "./helpers";
 import { getCypressMethod, log } from "./utils";
@@ -15,7 +20,9 @@ export function el<T extends Node = HTMLElement>(
   selector: string
 ): ElementType<{}, JQuery<T>>;
 export function el<T extends string>(selector: T): ElementType<{}, JQuery<T>>;
-export function el<T extends ElementProps>(props: T): ElementType<T, JQuery>;
+export function el<T extends ElementProps | {}>(
+  props: ElementPropsContext<T, keyof T>
+): ElementType<T, JQuery>;
 export function el(props) {
   const component: any = {
     ...(isSelector(props) ? { el: props } : props),

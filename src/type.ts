@@ -3,11 +3,21 @@ import { COMPONENT_SYMBOL, CONFIG_SYMBOL, PARENT_SYMBOL } from "./constants";
 export type LogType = "method" | "cy";
 export type SelectorType = string | String;
 
-// TODO add Record<string, ElementType<any> | ((...args: any[]) => void)>
 export type ElementProps = {
   el?: SelectorType;
   name?: string;
-} & Record<string, any>;
+};
+
+type PropContext<Context, Args extends any[], Return> = (
+  this: Context & Omit<Cypress.Chainable<JQuery>, keyof Context>,
+  ...args: Args
+) => Return;
+
+export type ElementPropsContext<T, K extends keyof T> = {
+  [Key in K]: T[Key] extends (...args: infer B) => infer C
+    ? PropContext<T, B, C>
+    : T[Key];
+};
 
 /**
  * Type for closed api of element
