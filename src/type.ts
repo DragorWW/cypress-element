@@ -23,8 +23,5 @@ export type ElementTypeLocal = {
 /**
  * cypress-element el() Public api
  */
-export type ElementType<T extends ElementProps, C = any> = Omit<
-  T,
-  "el" | "name"
-> &
+export type ElementType<T extends ElementProps, C = any> = Omit<T, "name"> &
   Omit<Cypress.Chainable<C>, keyof T>;

@@ -66,7 +66,7 @@ export const getSelectorByElement = (
     let parent = target[PARENT_SYMBOL].parent;
     while (parent) {
       selectorsList.push(parent.el);
-      parent = parent[PARENT_SYMBOL];
+      parent = parent[PARENT_SYMBOL]?.parent;
     }
   }
 

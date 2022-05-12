@@ -1,4 +1,4 @@
-# 🎁 cypress-element <small>0.0.6</small>
+# 🎁 cypress-element <small>0.1.0</small>
 
 > Composition api for [cypress](https://cypress.io)
 

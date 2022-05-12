@@ -113,6 +113,16 @@ const myButton = el({
 });
 ```
 
+## Use case
+
+### How to check element not exists in other element
+
+```typescript
+const page = el(".page");
+const alert = el(".alert");
+page.find(alert.el).should("not.exist");
+```
+
 ## API
 
 ### `el()`

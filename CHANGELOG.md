@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.0
+- fix: `el()` incorrect calculate selector of children in deep nesting
+- add: provide `Element.el` in public api
+
 ## 0.0.6
 
 - fix: `el({child})` mutate original `child` and brok `child.click()` and other method

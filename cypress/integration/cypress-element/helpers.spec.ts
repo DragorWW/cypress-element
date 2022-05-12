@@ -97,6 +97,10 @@ describe("getElPath", () => {
 
 describe("getSelectorByElement", () => {
   const exampleTree = el({
+    bigTree: el({
+      el: "bigTree",
+      one: el({ el: "one", two: el("two") }),
+    }),
     withSelector: el({
       el: "withSelector",
       withSelector: el({ el: "withSelector" }),
@@ -137,6 +141,10 @@ describe("getSelectorByElement", () => {
     ).to.be.eq("withSelector");
     expect(getSelectorByElement(exampleTree.withOutSelector.withOutSelector)).to
       .be.undefined;
+
+    expect(getSelectorByElement(exampleTree.bigTree.one.two)).to.be.eq(
+      "bigTree one two"
+    );
   });
 
   it("el don't mutable", () => {
