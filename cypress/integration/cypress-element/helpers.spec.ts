@@ -65,38 +65,42 @@ describe("getElType", () => {
   });
 
   it("when name is present: should be a PascalCase", () => {
-    expect(getElType(el({ name: "test" }))).to.be.eq("Test");
-    expect(getElType(el({ name: "Test" }))).to.be.eq("Test");
-    expect(getElType(el({ name: "testTest" }))).to.be.eq("TestTest");
+    expect(getElType(el({ name: "test" }))).deep.equal("Test");
+    expect(getElType(el({ name: "Test" }))).deep.equal("Test");
+    expect(getElType(el({ name: "testTest" }))).deep.equal("TestTest");
   });
 });
 
 describe("getElPath", () => {
   it("single element", () => {
-    expect(getElPath(el({}))).to.be.eq("");
-    expect(getElPath(el({}), "method")).to.be.eq(".method");
-    expect(getElPath(el({ name: "test" }))).to.be.eq("<Test>");
-    expect(getElPath(el({ name: "test" }), "method")).to.be.eq("<Test>.method");
+    expect(getElPath(el({}))).deep.equal("");
+    expect(getElPath(el({}), "method")).deep.equal(".method");
+    expect(getElPath(el({ name: "test" }))).deep.equal("<Test>");
+    expect(getElPath(el({ name: "test" }), "method")).deep.equal(
+      "<Test>.method"
+    );
   });
   it("children element access", () => {
-    expect(getElPath(elWithChildren.child1)).to.be.eq(
+    expect(getElPath(elWithChildren.child1)).deep.equal(
       "<ElWithChildren>.child1"
     );
-    expect(getElPath(elWithChildren.child1, "method")).to.be.eq(
+    expect(getElPath(elWithChildren.child1, "method")).deep.equal(
       "<ElWithChildren>.child1.method"
     );
 
-    expect(getElPath(elWithChildren.child2)).to.be.eq(
+    expect(getElPath(elWithChildren.child2)).deep.equal(
       "<ElWithChildren>.child2<Child2>"
     );
-    expect(getElPath(elWithChildren.child2, "method")).to.be.eq(
+    expect(getElPath(elWithChildren.child2, "method")).deep.equal(
       "<ElWithChildren>.child2<Child2>.method"
     );
   });
 });
 
 describe("getSelectorByElement", () => {
+  const selectorFn = (cy) => cy.find("html");
   const exampleTree = el({
+    fn: el({ el: selectorFn }),
     bigTree: el({
       el: "bigTree",
       one: el({ el: "one", two: el("two") }),
@@ -106,45 +110,50 @@ describe("getSelectorByElement", () => {
       withSelector: el({ el: "withSelector" }),
       withOutSelector: el({}),
       withRoot: el(el.r`withRoot`),
+      fn: el({ el: selectorFn }),
     }),
     withOutSelector: el({
       withSelector: el({ el: "withSelector" }),
       withOutSelector: el({}),
+      fn: el({ el: selectorFn }),
     }),
   });
   describe("single element", () => {
     it("element without selector", () => {
-      expect(getSelectorByElement(el({}))).to.be.undefined;
+      expect(getSelectorByElement(el({}))).to.length(0);
     });
     it("element with selector", () => {
-      expect(getSelectorByElement(el("selector"))).to.be.eq("selector");
+      expect(getSelectorByElement(el("selector"))).deep.equal(["selector"]);
     });
   });
   it("root selector prevent any parent selectors", () => {
-    expect(getSelectorByElement(exampleTree.withSelector.withRoot)).to.be.eq(
-      "withRoot"
-    );
+    expect(getSelectorByElement(exampleTree.withSelector.withRoot)).deep.equal([
+      "withRoot",
+    ]);
   });
 
   it("when parent and child has selectors - selectors should split `space`", () => {
     expect(
       getSelectorByElement(exampleTree.withSelector.withSelector)
-    ).to.be.eq("withSelector withSelector");
+    ).deep.equal(["withSelector", "withSelector"]);
   });
 
   it("element tree", () => {
     expect(
       getSelectorByElement(exampleTree.withSelector.withOutSelector)
-    ).to.be.eq("withSelector");
+    ).deep.equal(["withSelector"]);
     expect(
       getSelectorByElement(exampleTree.withOutSelector.withSelector)
-    ).to.be.eq("withSelector");
-    expect(getSelectorByElement(exampleTree.withOutSelector.withOutSelector)).to
-      .be.undefined;
+    ).deep.equal(["withSelector"]);
+    expect(
+      getSelectorByElement(exampleTree.withOutSelector.withOutSelector)
+    ).to.be.length(0);
 
-    expect(getSelectorByElement(exampleTree.bigTree.one.two)).to.be.eq(
-      "bigTree one two"
-    );
+    expect(getSelectorByElement(exampleTree.bigTree.one.two)).deep.equal([
+      "bigTree",
+      "one",
+      "two",
+    ]);
   });
 
   it("el don't mutable", () => {
@@ -153,8 +162,25 @@ describe("getSelectorByElement", () => {
     const parent1 = el({ el: "parent1", single });
     const parent2 = el({ el: "parent2", single });
 
-    expect(getSelectorByElement(single)).to.be.eq("single");
-    expect(getSelectorByElement(parent1.single)).to.be.eq("parent1 single");
-    expect(getSelectorByElement(parent2.single)).to.be.eq("parent2 single");
+    expect(getSelectorByElement(single)).deep.equal(["single"]);
+    expect(getSelectorByElement(parent1.single)).deep.equal([
+      "parent1",
+      "single",
+    ]);
+    expect(getSelectorByElement(parent2.single)).deep.equal([
+      "parent2",
+      "single",
+    ]);
+  });
+
+  it("function as selector", () => {
+    expect(getSelectorByElement(exampleTree.fn)).deep.equal([selectorFn]);
+    expect(getSelectorByElement(exampleTree.withSelector.fn)).deep.equal([
+      "withSelector",
+      selectorFn,
+    ]);
+    expect(getSelectorByElement(exampleTree.withOutSelector.fn)).deep.equal([
+      selectorFn,
+    ]);
   });
 });

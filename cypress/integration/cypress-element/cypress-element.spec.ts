@@ -1,5 +1,52 @@
 import { el } from "../../../src";
 
+const elementWithCustomQuery = el({
+  el(cy) {
+    return cy.contains("h1", "element-find-by-nested-selector").parent("div");
+  },
+});
+
+describe("querying", () => {
+  beforeEach(() => {
+    cy.visit("./cypress/index.html");
+  });
+  context("element find by nested selector", () => {
+    it("single", () => {
+      elementWithCustomQuery.should(
+        "have.class",
+        "element-find-by-nested-selector"
+      );
+      elementWithCustomQuery.should("have.attr", "data-parent", "false");
+    });
+
+    it("parent with selector", () => {
+      const element = el({
+        el: ".element.parent",
+        elementWithCustomQuery,
+      });
+      element.elementWithCustomQuery.should(
+        "have.class",
+        "element-find-by-nested-selector"
+      );
+      element.elementWithCustomQuery.should("have.attr", "data-parent", "true");
+    });
+    it("parent without selector", () => {
+      const element = el({
+        elementWithCustomQuery,
+      });
+      element.elementWithCustomQuery.should(
+        "have.class",
+        "element-find-by-nested-selector"
+      );
+      element.elementWithCustomQuery.should(
+        "have.attr",
+        "data-parent",
+        "false"
+      );
+    });
+  });
+});
+
 describe("cypress-element", () => {
   beforeEach(() => {
     // cy.visit("./cypress/test.html");

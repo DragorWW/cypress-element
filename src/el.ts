@@ -6,7 +6,7 @@ import {
   ElementTypeLocal,
 } from "./type";
 
-import { isEl, isSelector } from "./helpers";
+import { isEl, isMethod, isSelector } from "./helpers";
 import { getCypressMethod, log } from "./utils";
 
 import { rootSelector } from "./rootSelector";
@@ -39,19 +39,11 @@ export function el(props) {
       return (oTarget[PARENT_SYMBOL] = vValue);
     },
     get: function (target: ElementTypeLocal, name) {
-      if (
-        ["el", "name", PARENT_SYMBOL, COMPONENT_SYMBOL, CONFIG_SYMBOL].includes(
-          name
-        )
-      ) {
-        return target[name];
-      }
-
       if (name in target) {
-        if (!isEl(target[name])) {
+        if (isMethod(target, name)) {
+          // TODO: add group of method call
           log({ type: "method", target, name });
         }
-
         return target[name];
       }
 

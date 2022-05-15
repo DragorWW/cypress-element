@@ -5,53 +5,79 @@ type LogParams = {
   type: LogType;
   target: ElementTypeLocal;
   name?: string | Symbol;
-  $el?: JQuery;
+  group?: boolean;
 };
 
-export const log = ({ type, target, name, $el }: LogParams): void => {
+export const log = ({
+  type,
+  target,
+  name,
+  group = false,
+}: LogParams): Promise<Cypress.Log> => {
   const path = `🎁${getElPath(target, name)}${getLogPostfix(type)}`;
 
-  // need call cy then for display log correctly
-  // - in cypress call stack
-  // - not before cypress call stack
-  cy.wrap({}, { log: false }).then(() => {
-    let el: HTMLElement | HTMLElement[] = $el?.get() || [];
-    if (el.length === 1) {
-      el = el[0];
-    } else if (el.length === 0) {
-      el = undefined;
-    }
-
-    Cypress.log({
-      name: "🎁 cypress-element",
-      type: "parent",
-      displayName: path,
-      $el,
-      message: "", // prevent display right side in cypress runner
-      consoleProps() {
-        return {
-          path,
-          element: target,
-          yielded: el,
-        };
-      },
+  return new Promise((resolve, reject) => {
+    // need call cy then for display log correctly
+    // - in cypress call stack
+    // - not before cypress call stack
+    cy.wrap({}, { log: false }).then(() => {
+      const logObj = Cypress.log({
+        name: "🎁 cypress-element",
+        type: "parent",
+        displayName: path,
+        // @ts-ignore
+        groupStart: group,
+        end: group,
+        message: "", // prevent display right side in cypress runner
+        consoleProps() {
+          return {
+            path,
+            element: target,
+          };
+        },
+      });
+      resolve(logObj);
     });
   });
 };
 
-export const getCyBySelector = ({ target, method, selector }) => {
-  log({ type: "cy", target, $el: Cypress.$(selector) });
-  const el = cy.get(selector);
-
-  return el[method].bind(el);
-};
-
 export const getCypressMethod = (target, method) => {
-  const selector = getSelectorByElement(target);
+  const selectors = getSelectorByElement(target);
+  let chainable: Cypress.Chainable, logObj: Cypress.Log;
 
-  if (!selector) {
+  log({ type: "cy", target, group: selectors.length !== 0 }).then((i) => {
+    logObj = i;
+  });
+
+  if (selectors.length === 0) {
     return cy[method];
   }
 
-  return getCyBySelector({ target, method, selector });
+  selectors.forEach((selector, index) => {
+    if (typeof selector === "function") {
+      chainable = selector(chainable || cy);
+      return;
+    }
+    if (index === 0) {
+      chainable = cy.get(selector.toString());
+      return;
+    }
+    chainable = chainable.find(selector.toString());
+  });
+
+  // FIXME: we use private api to access to state of chain
+  chainable = (cy as any).state("chain").then((subject) => {
+    // FIXME: potential problem of rise condition of promise
+    if (logObj) {
+      logObj?.set({ $el: subject });
+      logObj?.snapshot();
+      logObj?.end();
+      // @ts-ignore FIXME: we use private api of log, for close group
+      logObj?.endGroup();
+    }
+
+    return subject;
+  });
+
+  return chainable[method].bind(chainable);
 };
