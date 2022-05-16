@@ -23,7 +23,9 @@ export const isMethod = (
 };
 
 export const isSelector = (selector: any): boolean =>
-  typeof selector === "string" || isRootSelector(selector);
+  typeof selector === "string" ||
+  isRootSelector(selector) ||
+  typeof selector === "function";
 
 export const isRootSelector = (selector: SelectorType): boolean =>
   !!(selector instanceof String && selector[ROOT_SYMBOL]);

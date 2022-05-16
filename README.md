@@ -5,19 +5,26 @@
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![npm version](https://badge.fury.io/js/cypress-element.svg)](https://www.npmjs.com/package/cypress-element)
 
-Composition api for [cypress](https://cypress.io)
+> `cypress-element` is under active development. You can help speed up the release of the stable version: try to use it in your projects and write about issues.
 
-`cypress-element` – Simple, Composable, Customisable, Reusable, Friendly for developer library written on TypeScript for writing tests on Cypress
+[Cypress](https://cypress.io) composition API for writing tests for a large application, focused on reusable, decomposition and beautiful typescript support.
 
 ![Screenshot](https://raw.githubusercontent.com/dragorww/cypress-element/main/docs/cypress-element-runtime.png)
 
-### Main concept
+### You should use `cypress-element` when:
 
-- ✨**Simple**: Everything is an element
-- 🌳**Composable**: element can be organized by composition of elements hierarchy
-- 🛠**Customisable**: You can create own elements
-- ⏳**Reusable**: You can save elements hierarchy
-- ✌**Friendly**: TypeScript first, autocomplete, auto type
+- You feel problems with your page object.
+- Your cypress tests now have many methods for interacting with custom elements.
+- You are looking for a solution that will allow you to separate utility code from tests.
+- You love Cypress and QA.
+
+### Main concept:
+
+- ✨ **Simple**: Everything is an element – one pattern for describing anything
+- 🌳 **Composable**: element can be organized in nesting of elements hierarchy
+- 🛠 **Customisable**: You can create your elements
+- ⏳ **Reusable**: You can save elements hierarchy
+- ✌ **Friendly**: TypeScript first, autocomplete, auto type
 
 ## Installing
 
@@ -32,11 +39,7 @@ yarn add -D cypress-element
 Then, in your test, you can write
 
 ```typescript
-import { el } from "cypress-element";
-// or
-// import el from 'cypress-element';
-
-// ...
+import el from "cypress-element";
 
 const page = el("div", {
   button: el("button"),
@@ -54,8 +57,10 @@ Read more in [documentation](https://dragorww.github.io/cypress-element/#/docs);
 
 ### Motivation
 
-Today real app usually work on one of frameworks: React, Vue, Agular. All popular frontend framework base on two concepts: composition structures and idea of everything is a component.
-We can use same ideas in tests for real app, and take benefits of this.
+Today real apps usually work on one of the frameworks: React, Vue, and Agular. All popular frontend frameworks are based on concepts: composition structures and the idea of everything is a component.
+QA can use the same ideas in tests and take benefits of this.
+
+`cypress-element` allows you not to think about the implementation. You can focus on business use-case checks
 
 ### Examples
 

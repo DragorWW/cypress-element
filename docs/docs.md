@@ -26,6 +26,16 @@ el({
 });
 ```
 
+you can use function as selector
+
+```typescript
+el({
+  el: (cy) => cy.find('button'),
+});
+
+el((cy) => cy.find('button'))
+```
+
 ### Reusable defined elements
 
 you can save element to variable

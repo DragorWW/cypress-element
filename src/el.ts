@@ -4,6 +4,7 @@ import {
   ElementPropsContext,
   ElementType,
   ElementTypeLocal,
+  SelectorType,
 } from "./type";
 
 import { isEl, isMethod, isSelector } from "./helpers";
@@ -19,7 +20,9 @@ export function el<T extends keyof HTMLElementTagNameMap>(
 export function el<T extends Node = HTMLElement>(
   selector: string
 ): ElementType<{}, JQuery<T>>;
-export function el<T extends string>(selector: T): ElementType<{}, JQuery<T>>;
+export function el<T extends SelectorType>(
+  selector: T
+): ElementType<{}, JQuery<T>>;
 export function el<T extends ElementProps | {}>(
   props: ElementPropsContext<T, keyof T>
 ): ElementType<T, JQuery>;
@@ -42,7 +45,7 @@ export function el(props) {
       if (name in target) {
         if (isMethod(target, name)) {
           // TODO: add group of method call
-          log({ type: "method", target, name });
+          log({ type: "method", target, name }).then();
         }
         return target[name];
       }

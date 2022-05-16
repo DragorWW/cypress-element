@@ -36,7 +36,7 @@ export const log = ({
           };
         },
       });
-      resolve(logObj);
+      return resolve(logObj);
     });
   });
 };
@@ -55,7 +55,7 @@ export const getCypressMethod = (target, method) => {
 
   selectors.forEach((selector, index) => {
     if (typeof selector === "function") {
-      chainable = selector(chainable || cy);
+      chainable = selector(chainable || cy.get("html", { log: false }));
       return;
     }
     if (index === 0) {
