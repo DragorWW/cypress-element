@@ -8,11 +8,39 @@ export const isEl = (target: unknown): target is ElementTypeLocal => {
   return false;
 };
 
+export const isMethod = (
+  target: ElementTypeLocal | ElementType<any>,
+  method: string | symbol
+): boolean => {
+  if (method === "el") {
+    return false;
+  }
+
+  if (typeof target[method] === "function") {
+    return true;
+  }
+  return false;
+};
+
 export const isSelector = (selector: any): boolean =>
-  typeof selector === "string" || isRootSelector(selector);
+  typeof selector === "string" ||
+  isRootSelector(selector) ||
+  typeof selector === "function";
 
 export const isRootSelector = (selector: SelectorType): boolean =>
   !!(selector instanceof String && selector[ROOT_SYMBOL]);
+
+export const getParent = (
+  target?: ElementTypeLocal | ElementType<any>
+): ElementTypeLocal | undefined => {
+  return target[PARENT_SYMBOL]?.parent;
+};
+
+export const hasParent = (
+  target: ElementTypeLocal | ElementType<any>
+): boolean => {
+  return PARENT_SYMBOL in target;
+};
 
 export const getElType = (
   target: ElementTypeLocal | ElementType<any>
@@ -59,30 +87,26 @@ export const getLogPostfix = (type: LogType): string => {
 
 export const getSelectorByElement = (
   target: ElementTypeLocal | ElementType<any>
-): string | undefined => {
-  let selectorsList: SelectorType[] = [target.el];
+): SelectorType[] => {
+  let selectorsList: SelectorType[] = [];
 
-  if (PARENT_SYMBOL in target) {
-    let parent = target[PARENT_SYMBOL].parent;
-    while (parent) {
-      selectorsList.push(parent.el);
-      parent = parent[PARENT_SYMBOL]?.parent;
+  let element = target;
+  while (element) {
+    const selector = element.el;
+    if (selector) {
+      if (isRootSelector(selector)) {
+        selectorsList.unshift(selector.toString());
+      } else {
+        selectorsList.unshift(selector);
+      }
+    }
+
+    if (isRootSelector(selector)) {
+      element = undefined;
+    } else {
+      element = getParent(element);
     }
   }
 
-  selectorsList = selectorsList
-    .filter(Boolean)
-    .reduce<(string | String)[]>((acc, current: string | String) => {
-      if (!acc.find(isRootSelector)) {
-        acc.push(current);
-      }
-      return acc;
-    }, [])
-    .reverse();
-
-  if (selectorsList.length === 0) {
-    return;
-  }
-
-  return selectorsList.join(" ");
+  return selectorsList;
 };

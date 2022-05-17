@@ -9,5 +9,26 @@
 </head>
 <body>
 
+<div id="element">
+  #element
+</div>
+
+<div id="rootSelector">
+  <div class="parent">
+    <div class="item-for-root-selector">.item</div>
+  </div>
+  <div class="item-for-root-selector">.item</div>
+</div>
+
+<div class="element element-find-by-nested-selector" data-parent="false">
+  <h1>element-find-by-nested-selector</h1>
+</div>
+
+<div class="element parent">
+  <h1>parent</h1>
+  <div class="element element-find-by-nested-selector" data-parent="true">
+    <h1>element-find-by-nested-selector</h1>
+  </div>
+</div>
 </body>
 </html>

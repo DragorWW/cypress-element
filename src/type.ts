@@ -1,7 +1,10 @@
 import { COMPONENT_SYMBOL, CONFIG_SYMBOL, PARENT_SYMBOL } from "./constants";
 
 export type LogType = "method" | "cy";
-export type SelectorType = string | String;
+export type SelectorQuery = string;
+export type SelectorRootQuery = String;
+export type SelectorFn = (cy: Cypress.Chainable<any>) => Cypress.Chainable<any>;
+export type SelectorType = SelectorQuery | SelectorRootQuery | SelectorFn;
 
 export type ElementProps = {
   el?: SelectorType;
@@ -27,7 +30,10 @@ export type ElementTypeLocal = {
   name?: string;
   [COMPONENT_SYMBOL]: true;
   [CONFIG_SYMBOL]: ElementProps;
-  [PARENT_SYMBOL]?: ElementType<any>;
+  [PARENT_SYMBOL]?: {
+    parent: ElementType<any>;
+    name: string;
+  };
 };
 
 /**
